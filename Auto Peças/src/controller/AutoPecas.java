@@ -9,7 +9,7 @@ package controller;
  *
  * @author Bruno
  */
-public class JavaApplication31 {
+public class AutoPecas {
 
     /**
      * @param args the command line arguments
