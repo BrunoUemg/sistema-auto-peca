@@ -139,7 +139,7 @@ public class ClienteDAO {
         }
         return clientesFisico;
     }
-    
+
     public List<ClienteJuridico> readJ() throws SQLException {
         ResultSet rs = null;
         List<ClienteJuridico> clientesJuridico = new ArrayList<>();
@@ -172,5 +172,17 @@ public class ClienteDAO {
             pst.close();
         }
         return clientesJuridico;
+    }
+
+    public ClienteFisico BuscarF(String codigo) throws SQLException {
+        sql = "SELECT * FROM cliente INNER JOIN cliente_fisico ON cliente.idcliente = cliente_fisico.idcliente WHERE cliente.idcliente = " + codigo;
+        pst = Conexao.getInstance().prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+        ClienteFisico clif = null;
+        while (rs.next()) {
+            clif = new ClienteFisico(rs.getInt("idcliente_fisico"), rs.getString("cpf"), rs.getString("rg"), rs.getDate("dtNascimento"),rs.getInt("idcliente"),rs.getString("nome"),rs.getString("endereco"),rs.getString("bairro"),rs.getString("numero"),rs.getString("cep"),rs.getString("cidade"),rs.getString("telefone"),rs.getString("celular"),rs.getString("email"));
+        }
+        pst.close();
+        return clif;
     }
 }

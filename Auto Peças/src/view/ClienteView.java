@@ -7,6 +7,7 @@ package view;
 
 import DAO.ClienteDAO;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
@@ -48,23 +49,17 @@ public class ClienteView extends javax.swing.JInternalFrame {
         modelF.setNumRows(0);
         for (ClienteFisico c : clienteDAO.readF()) {
             modelF.addRow(new Object[]{
+                c.getIdCliente(),
                 c.getNome(),
                 c.getCidade(),
                 c.getTelefone(),
                 c.getCelular(),
-                c.getEmail(),
-                c.getCep(),
-                c.getBairro(),
-                c.getCpf(),
-                c.getDtaNascimento(),
-                c.getEndereco(),
-                c.getRg(),
-                c.getNumero()
+                c.getEmail()
             });
-                
+
         }
     }
-    
+
     public void readJTableJ() throws SQLException {
         DefaultTableModel modelJ = (DefaultTableModel) tbJuridica.getModel();
         modelJ.setNumRows(0);
@@ -195,17 +190,18 @@ public class ClienteView extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Nome", "Cidade", "Telefone", "Celular", "E-mail"
+                "ID", "Nome", "Cidade", "Telefone", "Celular", "E-mail"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        tbFisica.getTableHeader().setReorderingAllowed(false);
         tbFisica.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbFisicaMouseClicked(evt);
@@ -593,23 +589,31 @@ public class ClienteView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnCadastrarJActionPerformed
 
     private void tbFisicaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbFisicaMouseClicked
-        
-
-                try {
-                     if(tbFisica.getSelectedRow() != -1){
-                    cliente = (Cliente) clienteDAO.readF();
-                    txtNomeF.setText(clienteFisico.getNome());
-                    
-                     }
-                } catch (SQLException ex) {
-                    Logger.getLogger(ClienteView.class.getName()).log(Level.SEVERE, null, ex);
+        if (tbFisica.getSelectedRow() != -1) {
+            try {
+                clienteFisico = clienteDAO.BuscarF(tbFisica.getValueAt(tbFisica.getSelectedRow(), 0).toString());
+                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                if (clienteFisico.getDtaNascimento() == null) {
+                    txtDtaNascimento.setText("00/00/0000");
+                }else{
+                    String strDate = dateFormat.format(clienteFisico.getDtaNascimento());
+                    txtDtaNascimento.setText(strDate);
                 }
-          
-             
-          
-            
-       
-        
+                txtNomeF.setText(clienteFisico.getNome());
+                txtTelefoneF.setText(clienteFisico.getTelefone());
+                txtCelularF.setText(clienteFisico.getCelular());
+                txtEmailF.setText(clienteFisico.getEmail());
+                txtCPF.setText(clienteFisico.getCpf());
+                txtRG.setText(clienteFisico.getRg());
+                txtCEPF.setText(clienteFisico.getCep());
+                txtCidadeF.setText(clienteFisico.getCidade());
+                txtEnderecoF.setText(clienteFisico.getEndereco());
+                txtNumeroF.setText(clienteFisico.getNumero());
+                txtBairroF.setText(clienteFisico.getBairro());
+            } catch (SQLException ex) {
+                Logger.getLogger(ClienteView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_tbFisicaMouseClicked
 
 
