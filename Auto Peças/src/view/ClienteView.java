@@ -5,16 +5,29 @@
  */
 package view;
 
+import DAO.ClienteDAO;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import model.Cliente;
+import model.ClienteFisico;
+
 /**
  *
  * @author serpa
  */
 public class ClienteView extends javax.swing.JInternalFrame {
 
+    Cliente cliente;
+    ClienteFisico clienteFisico;
+    ClienteDAO clienteDAO;
+
     /**
      * Creates new form ClienteView
      */
     public ClienteView() {
+        clienteDAO = new ClienteDAO();
         initComponents();
         this.setVisible(true);
     }
@@ -98,6 +111,11 @@ public class ClienteView extends javax.swing.JInternalFrame {
         jLabel6.setText("Número:");
 
         btnCadastrarF.setText("Cadastrar");
+        btnCadastrarF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarFActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("Telefone:");
 
@@ -306,20 +324,18 @@ public class ClienteView extends javax.swing.JInternalFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtNomeJ, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(txtTelefoneJ, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel19))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(txtCNPJ, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel21)))
+                                .addComponent(txtCNPJ, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtInscrEstadual, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtCelularJ, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(txtEmailJ, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jLabel21)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtInscrEstadual, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtEmailJ, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(txtTelefoneJ, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel19)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtCelularJ, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(115, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -393,11 +409,32 @@ public class ClienteView extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ClienteView, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
+            .addComponent(ClienteView)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCadastrarFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarFActionPerformed
+        clienteFisico = new ClienteFisico();
+        clienteFisico.setNome(txtNomeF.getText());
+        clienteFisico.setEndereco(txtEnderecoF.getText());
+        clienteFisico.setBairro(txtBairroF.getText());
+        clienteFisico.setNumero(txtNumeroF.getText());
+        clienteFisico.setCep(txtCEPF.getText());
+        clienteFisico.setCidade(txtCidadeF.getText());
+        clienteFisico.setTelefone(txtTelefoneF.getText());
+        clienteFisico.setCelular(txtCelularF.getText());
+        clienteFisico.setEndereco(txtEnderecoF.getText());
+        clienteFisico.setEmail(txtEmailF.getText());
+        System.out.println(clienteFisico.getNome());
+        try {
+            clienteDAO.salvarF(clienteFisico);
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        JOptionPane.showMessageDialog(null, "Gravado com Sucesso");
+    }//GEN-LAST:event_btnCadastrarFActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

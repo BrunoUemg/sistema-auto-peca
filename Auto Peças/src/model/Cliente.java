@@ -20,8 +20,9 @@ public class Cliente {
     private String cidade;
     private String telefone;
     private String celular;
+    private String email;
 
-    public Cliente(int idCliente, String nome, String endereco, String bairro, String numero, String cep, String cidade, String telefone, String celular) {
+    public Cliente(int idCliente, String nome, String endereco, String bairro, String numero, String cep, String cidade, String telefone, String celular, String email) {
         this.idCliente = idCliente;
         this.nome = nome;
         this.endereco = endereco;
@@ -31,6 +32,7 @@ public class Cliente {
         this.cidade = cidade;
         this.telefone = telefone;
         this.celular = celular;
+        this.email = email;
     }
 
     public int getIdCliente() {
@@ -104,7 +106,17 @@ public class Cliente {
     public void setCelular(String celular) {
         this.celular = celular;
     }
-    
-    
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Cliente() {
+
+    }
 
 }

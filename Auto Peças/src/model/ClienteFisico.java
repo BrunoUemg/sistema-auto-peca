@@ -11,14 +11,23 @@ import java.util.Date;
  *
  * @author serpa
  */
-public class ClienteFisico extends Cliente{
+public class ClienteFisico extends Cliente {
+
     private int idClienteFisico;
     private String cpf;
     private String rg;
     private Date dtaNascimento;
 
-    public ClienteFisico(int idCliente, String nome, String endereco, String bairro, String numero, String cep, String cidade, String telefone, String celular) {
-        super(idCliente, nome, endereco, bairro, numero, cep, cidade, telefone, celular);
+    public ClienteFisico(int idCliente, String nome, String endereco, String bairro, String numero, String cep, String cidade, String telefone, String celular, String email) {
+        super(idCliente, nome, endereco, bairro, numero, cep, cidade, telefone, celular, email);
+    }
+
+    public ClienteFisico(int idClienteFisico, String cpf, String rg, Date dtaNascimento, int idCliente, String nome, String endereco, String bairro, String numero, String cep, String cidade, String telefone, String celular, String email) {
+        super(idCliente, nome, endereco, bairro, numero, cep, cidade, telefone, celular, email);
+        this.idClienteFisico = idClienteFisico;
+        this.cpf = cpf;
+        this.rg = rg;
+        this.dtaNascimento = dtaNascimento;
     }
 
     public int getIdClienteFisico() {
@@ -52,5 +61,9 @@ public class ClienteFisico extends Cliente{
     public void setDtaNascimento(Date dtaNascimento) {
         this.dtaNascimento = dtaNascimento;
     }
-    
+
+    public ClienteFisico() {
+
+    }
+
 }

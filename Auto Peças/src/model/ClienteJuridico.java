@@ -17,8 +17,8 @@ public class ClienteJuridico extends Cliente{
     private String inscricaoEstadual;
     private Date fundacao;
 
-    public ClienteJuridico(int idCliente, String nome, String endereco, String bairro, String numero, String cep, String cidade, String telefone, String celular) {
-        super(idCliente, nome, endereco, bairro, numero, cep, cidade, telefone, celular);
+    public ClienteJuridico(int idCliente, String nome, String endereco, String bairro, String numero, String cep, String cidade, String telefone, String celular, String email) {
+        super(idCliente, nome, endereco, bairro, numero, cep, cidade, telefone, celular, email);
     }
 
     public int getIdClienteJuridico() {
