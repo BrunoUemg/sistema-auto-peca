@@ -402,13 +402,29 @@ public class ClienteView extends javax.swing.JInternalFrame {
             new String [] {
                 "ID", "Nome", "Cidade", "Telefone", "Celular", "E-mail"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tbJuridica.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbJuridicaMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(tbJuridica);
+        if (tbJuridica.getColumnModel().getColumnCount() > 0) {
+            tbJuridica.getColumnModel().getColumn(0).setResizable(false);
+            tbJuridica.getColumnModel().getColumn(1).setResizable(false);
+            tbJuridica.getColumnModel().getColumn(2).setResizable(false);
+            tbJuridica.getColumnModel().getColumn(3).setResizable(false);
+            tbJuridica.getColumnModel().getColumn(4).setResizable(false);
+            tbJuridica.getColumnModel().getColumn(5).setResizable(false);
+        }
 
         btnAlterarJ.setText("alterar");
         btnAlterarJ.addActionListener(new java.awt.event.ActionListener() {
@@ -651,7 +667,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 if (clienteFisico.getDtaNascimento() == null) {
                     txtDtaNascimento.setText("00/00/0000");
-                }else{
+                } else {
                     String strDate = dateFormat.format(clienteFisico.getDtaNascimento());
                     txtDtaNascimento.setText(strDate);
                 }
@@ -677,9 +693,9 @@ public class ClienteView extends javax.swing.JInternalFrame {
             try {
                 clienteJuridico = clienteDAO.BuscarJ(tbJuridica.getValueAt(tbJuridica.getSelectedRow(), 0).toString());
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                if (clienteJuridico.getFundacao()== null) {
+                if (clienteJuridico.getFundacao() == null) {
                     txtFundacao.setText("00/00/0000");
-                }else{
+                } else {
                     String strDate = dateFormat.format(clienteJuridico.getFundacao());
                     txtFundacao.setText(strDate);
                 }
@@ -701,9 +717,8 @@ public class ClienteView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tbJuridicaMouseClicked
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        
-       
-         clienteFisico = new ClienteFisico();
+
+        clienteFisico = new ClienteFisico();
         clienteFisico.setNome(txtNomeF.getText());
         clienteFisico.setEndereco(txtEnderecoF.getText());
         clienteFisico.setBairro(txtBairroF.getText());
@@ -717,7 +732,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
         clienteFisico.setCpf(txtCPF.getText());
         clienteFisico.setRg(txtRG.getText());
         clienteFisico.setIdCliente((int) tbFisica.getValueAt(tbFisica.getSelectedRow(), 0));
-        
+
         String text = txtDtaNascimento.getText();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         java.util.Date textFieldAsDate = null;
@@ -734,8 +749,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(ClienteView.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
-        
+
         JOptionPane.showMessageDialog(null, "Alterado com Sucesso");
         limpaCamposF();
     }//GEN-LAST:event_btnAlterarActionPerformed
@@ -776,54 +790,54 @@ public class ClienteView extends javax.swing.JInternalFrame {
 
     private void excluirJActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirJActionPerformed
         clienteJuridico = new ClienteJuridico();
-        if(txtNomeJ.getText().isEmpty()){
+        if (txtNomeJ.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Selecione um cliente");
-            
-        }else{
+
+        } else {
             clienteJuridico.setIdCliente((int) tbJuridica.getValueAt(tbJuridica.getSelectedRow(), 0));
             int confirma = JOptionPane.showConfirmDialog(null, "Deseja excluir:" + txtNomeJ.getText());
-            if(confirma == 0){
+            if (confirma == 0) {
                 try {
-              clienteDAO.excluirJ(clienteJuridico);
-              readJTableJ();
-               } catch (SQLException ex) {
-              Logger.getLogger(ClienteView.class.getName()).log(Level.SEVERE, null, ex);
+                    clienteDAO.excluirJ(clienteJuridico);
+                    readJTableJ();
+                } catch (SQLException ex) {
+                    Logger.getLogger(ClienteView.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 JOptionPane.showMessageDialog(null, "Excluido com sucesso");
                 limpaCamposJ();
-            }}
-        
+            }
+        }
+
     }//GEN-LAST:event_excluirJActionPerformed
 
     private void btnExcluirFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirFActionPerformed
         clienteFisico = new ClienteFisico();
-        if(txtNomeF.getText().isEmpty()){
+        if (txtNomeF.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Selecione um cliente");
-            
-        }else{
+
+        } else {
             clienteFisico.setIdCliente((int) tbFisica.getValueAt(tbFisica.getSelectedRow(), 0));
             int confirma = JOptionPane.showConfirmDialog(null, "Deseja excluir:" + txtNomeF.getText());
-            if(confirma == 0){
+            if (confirma == 0) {
                 try {
-              clienteDAO.excluirF(clienteFisico);
-              readJTableF();
-               } catch (SQLException ex) {
-              Logger.getLogger(ClienteView.class.getName()).log(Level.SEVERE, null, ex);
+                    clienteDAO.excluirF(clienteFisico);
+                    readJTableF();
+                } catch (SQLException ex) {
+                    Logger.getLogger(ClienteView.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 JOptionPane.showMessageDialog(null, "Excluido com sucesso");
                 limpaCamposF();
-            }}
+            }
+        }
     }//GEN-LAST:event_btnExcluirFActionPerformed
 
-    
-    
-     public void limpaCamposF() {
-        
+    public void limpaCamposF() {
+
         txtNomeF.setText("");
         txtCPF.setText("");
         txtEnderecoF.setText("");
         txtEmailF.setText("");
-        txtBairroF.setText("");        
+        txtBairroF.setText("");
         txtTelefoneF.setText("");
         txtCelularF.setText("");
         txtCidadeF.setText("");
@@ -831,18 +845,16 @@ public class ClienteView extends javax.swing.JInternalFrame {
         txtDtaNascimento.setText("");
         txtRG.setText("");
         txtNumeroF.setText("");
-              
-       
 
     }
-     
-      public void limpaCamposJ() {
-        
+
+    public void limpaCamposJ() {
+
         txtNomeJ.setText("");
         txtCNPJ.setText("");
         txtEnderecoJ.setText("");
         txtEmailJ.setText("");
-        txtBairroJ.setText("");        
+        txtBairroJ.setText("");
         txtTelefoneJ.setText("");
         txtCelularJ.setText("");
         txtCidadeJ.setText("");
@@ -850,11 +862,9 @@ public class ClienteView extends javax.swing.JInternalFrame {
         txtFundacao.setText("");
         txtInscrEstadual.setText("");
         txtNumeroJ.setText("");
-              
-       
 
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane ClienteView;
