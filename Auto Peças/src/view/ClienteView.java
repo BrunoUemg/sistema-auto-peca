@@ -52,7 +52,16 @@ public class ClienteView extends javax.swing.JInternalFrame {
                 c.getCidade(),
                 c.getTelefone(),
                 c.getCelular(),
-                c.getEmail(),});
+                c.getEmail(),
+                c.getCep(),
+                c.getBairro(),
+                c.getCpf(),
+                c.getDtaNascimento(),
+                c.getEndereco(),
+                c.getRg(),
+                c.getNumero()
+            });
+                
         }
     }
     
@@ -195,6 +204,11 @@ public class ClienteView extends javax.swing.JInternalFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tbFisica.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbFisicaMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tbFisica);
@@ -577,6 +591,26 @@ public class ClienteView extends javax.swing.JInternalFrame {
         }
         JOptionPane.showMessageDialog(null, "Gravado com Sucesso");
     }//GEN-LAST:event_btnCadastrarJActionPerformed
+
+    private void tbFisicaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbFisicaMouseClicked
+        
+
+                try {
+                     if(tbFisica.getSelectedRow() != -1){
+                    cliente = (Cliente) clienteDAO.readF();
+                    txtNomeF.setText(clienteFisico.getNome());
+                    
+                     }
+                } catch (SQLException ex) {
+                    Logger.getLogger(ClienteView.class.getName()).log(Level.SEVERE, null, ex);
+                }
+          
+             
+          
+            
+       
+        
+    }//GEN-LAST:event_tbFisicaMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
