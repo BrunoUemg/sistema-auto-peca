@@ -185,4 +185,16 @@ public class ClienteDAO {
         pst.close();
         return clif;
     }
+    
+    public ClienteJuridico BuscarJ(String codigo) throws SQLException {
+        sql = "SELECT * FROM cliente INNER JOIN cliente_juridico ON cliente.idcliente = cliente_juridico.idcliente WHERE cliente.idcliente = " + codigo;
+        pst = Conexao.getInstance().prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+        ClienteJuridico clij = null;
+        while (rs.next()) {
+            clij = new ClienteJuridico(rs.getInt("idcliente_juridico"), rs.getString("cnpj"), rs.getString("inscricaoEstadual"), rs.getDate("fundacao"),rs.getInt("idcliente"),rs.getString("nome"),rs.getString("endereco"),rs.getString("bairro"),rs.getString("numero"),rs.getString("cep"),rs.getString("cidade"),rs.getString("telefone"),rs.getString("celular"),rs.getString("email"));
+        }
+        pst.close();
+        return clij;
+    }
 }

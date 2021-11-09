@@ -65,6 +65,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
         modelJ.setNumRows(0);
         for (ClienteJuridico c : clienteDAO.readJ()) {
             modelJ.addRow(new Object[]{
+                c.getIdCliente(),
                 c.getNome(),
                 c.getCidade(),
                 c.getTelefone(),
@@ -373,9 +374,14 @@ public class ClienteView extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Nome", "Cidade", "Telefone", "Celular", "E-mail"
+                "ID", "Nome", "Cidade", "Telefone", "Celular", "E-mail"
             }
         ));
+        tbJuridica.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbJuridicaMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tbJuridica);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -615,6 +621,34 @@ public class ClienteView extends javax.swing.JInternalFrame {
             }
         }
     }//GEN-LAST:event_tbFisicaMouseClicked
+
+    private void tbJuridicaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbJuridicaMouseClicked
+        if (tbJuridica.getSelectedRow() != -1) {
+            try {
+                clienteJuridico = clienteDAO.BuscarJ(tbJuridica.getValueAt(tbJuridica.getSelectedRow(), 0).toString());
+                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                if (clienteJuridico.getFundacao()== null) {
+                    txtFundacao.setText("00/00/0000");
+                }else{
+                    String strDate = dateFormat.format(clienteJuridico.getFundacao());
+                    txtFundacao.setText(strDate);
+                }
+                txtNomeJ.setText(clienteJuridico.getNome());
+                txtTelefoneJ.setText(clienteJuridico.getTelefone());
+                txtCelularJ.setText(clienteJuridico.getCelular());
+                txtEmailJ.setText(clienteJuridico.getEmail());
+                txtCNPJ.setText(clienteJuridico.getCnpj());
+                txtInscrEstadual.setText(clienteJuridico.getInscricaoEstadual());
+                txtCEPJ.setText(clienteJuridico.getCep());
+                txtCidadeJ.setText(clienteJuridico.getCidade());
+                txtEnderecoJ.setText(clienteJuridico.getEndereco());
+                txtNumeroJ.setText(clienteJuridico.getNumero());
+                txtBairroJ.setText(clienteJuridico.getBairro());
+            } catch (SQLException ex) {
+                Logger.getLogger(ClienteView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_tbJuridicaMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

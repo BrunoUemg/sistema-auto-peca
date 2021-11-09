@@ -22,7 +22,8 @@ public class ClienteJuridico extends Cliente {
         super(idCliente, nome, endereco, bairro, numero, cep, cidade, telefone, celular, email);
     }
 
-    public ClienteJuridico(int idClienteJuridico, String cnpj, String inscricaoEstadual, Date fundacao) {
+    public ClienteJuridico(int idClienteJuridico, String cnpj, String inscricaoEstadual, Date fundacao, int idCliente, String nome, String endereco, String bairro, String numero, String cep, String cidade, String telefone, String celular, String email) {
+        super(idCliente, nome, endereco, bairro, numero, cep, cidade, telefone, celular, email);
         this.idClienteJuridico = idClienteJuridico;
         this.cnpj = cnpj;
         this.inscricaoEstadual = inscricaoEstadual;
