@@ -11,7 +11,8 @@ import java.util.Date;
  *
  * @author serpa
  */
-public class ClienteJuridico extends Cliente{
+public class ClienteJuridico extends Cliente {
+
     private int idClienteJuridico;
     private String cnpj;
     private String inscricaoEstadual;
@@ -19,6 +20,16 @@ public class ClienteJuridico extends Cliente{
 
     public ClienteJuridico(int idCliente, String nome, String endereco, String bairro, String numero, String cep, String cidade, String telefone, String celular, String email) {
         super(idCliente, nome, endereco, bairro, numero, cep, cidade, telefone, celular, email);
+    }
+
+    public ClienteJuridico(int idClienteJuridico, String cnpj, String inscricaoEstadual, Date fundacao) {
+        this.idClienteJuridico = idClienteJuridico;
+        this.cnpj = cnpj;
+        this.inscricaoEstadual = inscricaoEstadual;
+        this.fundacao = fundacao;
+    }
+
+    public ClienteJuridico() {
     }
 
     public int getIdClienteJuridico() {
@@ -52,5 +63,5 @@ public class ClienteJuridico extends Cliente{
     public void setFundacao(Date fundacao) {
         this.fundacao = fundacao;
     }
-    
+
 }

@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.Cliente;
 import model.ClienteFisico;
+import model.ClienteJuridico;
 
 /**
  *
@@ -23,6 +24,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
 
     Cliente cliente;
     ClienteFisico clienteFisico;
+    ClienteJuridico clienteJuridico;
     ClienteDAO clienteDAO;
 
     /**
@@ -84,7 +86,6 @@ public class ClienteView extends javax.swing.JInternalFrame {
         txtBairroJ = new javax.swing.JTextField();
         jLabel22 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        txtFundacao = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         txtNumeroJ = new javax.swing.JTextField();
         txtNomeJ = new javax.swing.JTextField();
@@ -98,6 +99,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
         txtCelularJ = new javax.swing.JTextField();
         jLabel24 = new javax.swing.JLabel();
         txtEmailJ = new javax.swing.JTextField();
+        txtFundacao = new javax.swing.JFormattedTextField();
 
         setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         setClosable(true);
@@ -279,6 +281,11 @@ public class ClienteView extends javax.swing.JInternalFrame {
         jLabel12.setText("Nome:");
 
         btnCadastrarJ.setText("Cadastrar");
+        btnCadastrarJ.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarJActionPerformed(evt);
+            }
+        });
 
         jLabel18.setText("Telefone:");
 
@@ -289,6 +296,8 @@ public class ClienteView extends javax.swing.JInternalFrame {
         jLabel14.setText("Cidade:");
 
         jLabel24.setText("E-mail:");
+
+        txtFundacao.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -394,7 +403,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
                     .addComponent(txtBairroJ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36)
                 .addComponent(btnCadastrarJ)
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout PanelJuridicaLayout = new javax.swing.GroupLayout(PanelJuridica);
@@ -460,6 +469,37 @@ public class ClienteView extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDtaNascimentoActionPerformed
 
+    private void btnCadastrarJActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarJActionPerformed
+        clienteJuridico = new ClienteJuridico();
+        clienteJuridico.setNome(txtNomeJ.getText());
+        clienteJuridico.setEndereco(txtEnderecoJ.getText());
+        clienteJuridico.setBairro(txtBairroJ.getText());
+        clienteJuridico.setNumero(txtNumeroJ.getText());
+        clienteJuridico.setCep(txtCEPJ.getText());
+        clienteJuridico.setCidade(txtCidadeJ.getText());
+        clienteJuridico.setTelefone(txtTelefoneJ.getText());
+        clienteJuridico.setCelular(txtCelularJ.getText());
+        clienteJuridico.setEndereco(txtEnderecoJ.getText());
+        clienteJuridico.setEmail(txtEmailJ.getText());
+        clienteJuridico.setCnpj(txtCNPJ.getText());
+        clienteJuridico.setInscricaoEstadual(txtInscrEstadual.getText());
+        String text = txtFundacao.getText();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        java.util.Date textFieldAsDate = null;
+        try {
+            textFieldAsDate = sdf.parse(text);
+        } catch (ParseException pe) {
+            // deal with ParseException
+        }
+        clienteJuridico.setFundacao(textFieldAsDate);
+        try {
+            clienteDAO.salvarJ(clienteJuridico);
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        JOptionPane.showMessageDialog(null, "Gravado com Sucesso");
+    }//GEN-LAST:event_btnCadastrarJActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane ClienteView;
@@ -508,7 +548,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtEmailJ;
     private javax.swing.JTextField txtEnderecoF;
     private javax.swing.JTextField txtEnderecoJ;
-    private javax.swing.JTextField txtFundacao;
+    private javax.swing.JFormattedTextField txtFundacao;
     private javax.swing.JTextField txtInscrEstadual;
     private javax.swing.JTextField txtNomeF;
     private javax.swing.JTextField txtNomeJ;

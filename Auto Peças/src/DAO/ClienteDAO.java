@@ -64,13 +64,41 @@ public class ClienteDAO {
     }
 
     public void salvarJ(ClienteJuridico clienteJuridico) throws SQLException {
-        sql = "INSERT INTO cliente values(?,?,?,?,null)";
-        pst = Conexao.getInstance().prepareStatement(sql);
+        sql = "INSERT INTO cliente values(?,?,?,?,?,?,?,?,?,?)";
+        pst = Conexao.getInstance().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
         pst.setInt(1, 0);
         pst.setString(2, clienteJuridico.getNome());
         pst.setString(3, clienteJuridico.getEndereco());
-        pst.setString(4, clienteJuridico.getEndereco());
-        pst.execute();
+        pst.setString(4, clienteJuridico.getBairro());
+        pst.setString(5, clienteJuridico.getNumero());
+        pst.setString(6, clienteJuridico.getCep());
+        pst.setString(7, clienteJuridico.getCidade());
+        pst.setString(8, clienteJuridico.getTelefone());
+        pst.setString(9, clienteJuridico.getCelular());
+        pst.setString(10, clienteJuridico.getEmail());
+        int affectedRows = pst.executeUpdate();
+        if (affectedRows == 0) {
+            throw new SQLException("Erro ao adicionar Cliente.");
+        }
+        try (ResultSet generatedKeys = pst.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+                idCliente = (int) generatedKeys.getLong(1);
+            } else {
+                throw new SQLException("Erro ao criar o cliente, nenhum ID obtido!");
+            }
+        }
+        sql = "INSERT INTO cliente_juridico values(?,?,?,?,?)";
+        System.out.println(clienteJuridico.getCnpj());
+        pst = Conexao.getInstance().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+        pst.setInt(1, 0);
+        pst.setString(2, clienteJuridico.getCnpj());
+        pst.setString(3, clienteJuridico.getInscricaoEstadual());
+        sdf = new SimpleDateFormat("yyyy-MM-dd");
+        java.sql.Date date = java.sql.Date.valueOf(sdf.format(clienteJuridico.getFundacao()));
+        pst.setDate(4,date);
+        pst.setInt(5, idCliente);
+        pst.executeUpdate();
+//        pst.execute();
         pst.close();
     }
 }
