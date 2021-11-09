@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import model.Cliente;
 import model.ClienteFisico;
 import model.ClienteJuridico;
@@ -34,6 +35,38 @@ public class ClienteView extends javax.swing.JInternalFrame {
         clienteDAO = new ClienteDAO();
         initComponents();
         this.setVisible(true);
+        try {
+            readJTableF();
+            readJTableJ();
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void readJTableF() throws SQLException {
+        DefaultTableModel modelF = (DefaultTableModel) tbFisica.getModel();
+        modelF.setNumRows(0);
+        for (ClienteFisico c : clienteDAO.readF()) {
+            modelF.addRow(new Object[]{
+                c.getNome(),
+                c.getCidade(),
+                c.getTelefone(),
+                c.getCelular(),
+                c.getEmail(),});
+        }
+    }
+    
+    public void readJTableJ() throws SQLException {
+        DefaultTableModel modelJ = (DefaultTableModel) tbJuridica.getModel();
+        modelJ.setNumRows(0);
+        for (ClienteJuridico c : clienteDAO.readJ()) {
+            modelJ.addRow(new Object[]{
+                c.getNome(),
+                c.getCidade(),
+                c.getTelefone(),
+                c.getCelular(),
+                c.getEmail(),});
+        }
     }
 
     /**
@@ -73,6 +106,8 @@ public class ClienteView extends javax.swing.JInternalFrame {
         jLabel23 = new javax.swing.JLabel();
         txtEmailF = new javax.swing.JTextField();
         txtDtaNascimento = new javax.swing.JFormattedTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbFisica = new javax.swing.JTable();
         PanelJuridica = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         txtCidadeJ = new javax.swing.JTextField();
@@ -100,6 +135,8 @@ public class ClienteView extends javax.swing.JInternalFrame {
         jLabel24 = new javax.swing.JLabel();
         txtEmailJ = new javax.swing.JTextField();
         txtFundacao = new javax.swing.JFormattedTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbJuridica = new javax.swing.JTable();
 
         setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         setClosable(true);
@@ -143,6 +180,24 @@ public class ClienteView extends javax.swing.JInternalFrame {
                 txtDtaNascimentoActionPerformed(evt);
             }
         });
+
+        tbFisica.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Nome", "Cidade", "Telefone", "Celular", "E-mail"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tbFisica);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -201,7 +256,8 @@ public class ClienteView extends javax.swing.JInternalFrame {
                                     .addComponent(txtRG, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtCelularF, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(txtEmailF, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(115, Short.MAX_VALUE))
+                .addContainerGap(582, Short.MAX_VALUE))
+            .addComponent(jScrollPane1)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -248,9 +304,10 @@ public class ClienteView extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtBairroF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCadastrarF)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout PanelFisicaLayout = new javax.swing.GroupLayout(PanelFisica);
@@ -261,7 +318,9 @@ public class ClienteView extends javax.swing.JInternalFrame {
         );
         PanelFisicaLayout.setVerticalGroup(
             PanelFisicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(PanelFisicaLayout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         ClienteView.addTab("Pessoa Fisica", PanelFisica);
@@ -298,6 +357,16 @@ public class ClienteView extends javax.swing.JInternalFrame {
         jLabel24.setText("E-mail:");
 
         txtFundacao.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+
+        tbJuridica.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Nome", "Cidade", "Telefone", "Celular", "E-mail"
+            }
+        ));
+        jScrollPane2.setViewportView(tbJuridica);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -354,12 +423,13 @@ public class ClienteView extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel19)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtCelularJ, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(115, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1023, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtNomeJ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12))
@@ -401,9 +471,11 @@ public class ClienteView extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
                     .addComponent(txtBairroJ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCadastrarJ)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
         );
 
         javax.swing.GroupLayout PanelJuridicaLayout = new javax.swing.GroupLayout(PanelJuridica);
@@ -414,7 +486,9 @@ public class ClienteView extends javax.swing.JInternalFrame {
         );
         PanelJuridicaLayout.setVerticalGroup(
             PanelJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(PanelJuridicaLayout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 538, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         ClienteView.addTab("Pessoa Juridica", PanelJuridica);
@@ -427,7 +501,9 @@ public class ClienteView extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ClienteView)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(ClienteView)
+                .addContainerGap())
         );
 
         pack();
@@ -459,6 +535,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
         clienteFisico.setDtaNascimento(textFieldAsDate);
         try {
             clienteDAO.salvarF(clienteFisico);
+            readJTableF();
         } catch (SQLException ex) {
             Logger.getLogger(ClienteView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -494,6 +571,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
         clienteJuridico.setFundacao(textFieldAsDate);
         try {
             clienteDAO.salvarJ(clienteJuridico);
+            readJTableJ();
         } catch (SQLException ex) {
             Logger.getLogger(ClienteView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -533,6 +611,10 @@ public class ClienteView extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable tbFisica;
+    private javax.swing.JTable tbJuridica;
     private javax.swing.JTextField txtBairroF;
     private javax.swing.JTextField txtBairroJ;
     private javax.swing.JTextField txtCEPF;

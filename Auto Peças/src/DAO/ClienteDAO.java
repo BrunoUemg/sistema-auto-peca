@@ -12,6 +12,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -56,7 +60,7 @@ public class ClienteDAO {
         pst.setString(3, clienteFisico.getRg());
         sdf = new SimpleDateFormat("yyyy-MM-dd");
         java.sql.Date date = java.sql.Date.valueOf(sdf.format(clienteFisico.getDtaNascimento()));
-        pst.setDate(4,date);
+        pst.setDate(4, date);
         pst.setInt(5, idCliente);
         pst.executeUpdate();
 //        pst.execute();
@@ -95,10 +99,78 @@ public class ClienteDAO {
         pst.setString(3, clienteJuridico.getInscricaoEstadual());
         sdf = new SimpleDateFormat("yyyy-MM-dd");
         java.sql.Date date = java.sql.Date.valueOf(sdf.format(clienteJuridico.getFundacao()));
-        pst.setDate(4,date);
+        pst.setDate(4, date);
         pst.setInt(5, idCliente);
         pst.executeUpdate();
 //        pst.execute();
         pst.close();
+    }
+
+    public List<ClienteFisico> readF() throws SQLException {
+        ResultSet rs = null;
+        List<ClienteFisico> clientesFisico = new ArrayList<>();
+        try {
+            sql = "SELECT * FROM cliente INNER JOIN cliente_fisico ON cliente.idcliente = cliente_fisico.idcliente";
+            pst = Conexao.getInstance().prepareStatement(sql);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                ClienteFisico clienteFisico = new ClienteFisico();
+                clienteFisico.setIdCliente(rs.getInt("idcliente"));
+                clienteFisico.setNome(rs.getString("nome"));
+                clienteFisico.setEndereco(rs.getString("endereco"));
+                clienteFisico.setBairro(rs.getString("bairro"));
+                clienteFisico.setNumero(rs.getString("numero"));
+                clienteFisico.setCep(rs.getString("cep"));
+                clienteFisico.setCidade(rs.getString("cidade"));
+                clienteFisico.setTelefone(rs.getString("telefone"));
+                clienteFisico.setCelular(rs.getString("celular"));
+                clienteFisico.setEmail(rs.getString("email"));
+                clienteFisico.setIdClienteFisico(rs.getInt("idcliente_fisico"));
+                clienteFisico.setCpf(rs.getString("cpf"));
+                clienteFisico.setRg(rs.getString("rg"));
+                clienteFisico.setDtaNascimento(rs.getDate("dtNascimento"));
+                clientesFisico.add(clienteFisico);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            pst.close();
+        }
+        return clientesFisico;
+    }
+    
+    public List<ClienteJuridico> readJ() throws SQLException {
+        ResultSet rs = null;
+        List<ClienteJuridico> clientesJuridico = new ArrayList<>();
+        try {
+            sql = "SELECT * FROM cliente INNER JOIN cliente_juridico ON cliente.idcliente = cliente_juridico.idcliente";
+            pst = Conexao.getInstance().prepareStatement(sql);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                ClienteJuridico clienteJuridico = new ClienteJuridico();
+                clienteJuridico.setIdCliente(rs.getInt("idcliente"));
+                clienteJuridico.setNome(rs.getString("nome"));
+                clienteJuridico.setEndereco(rs.getString("endereco"));
+                clienteJuridico.setBairro(rs.getString("bairro"));
+                clienteJuridico.setNumero(rs.getString("numero"));
+                clienteJuridico.setCep(rs.getString("cep"));
+                clienteJuridico.setCidade(rs.getString("cidade"));
+                clienteJuridico.setTelefone(rs.getString("telefone"));
+                clienteJuridico.setCelular(rs.getString("celular"));
+                clienteJuridico.setEmail(rs.getString("email"));
+                clienteJuridico.setIdClienteJuridico(rs.getInt("idcliente_juridico"));
+                clienteJuridico.setCnpj(rs.getString("cnpj"));
+                clienteJuridico.setInscricaoEstadual(rs.getString("inscricaoEstadual"));
+                clienteJuridico.setFundacao(rs.getDate("fundacao"));
+                clientesJuridico.add(clienteJuridico);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            pst.close();
+        }
+        return clientesJuridico;
     }
 }
