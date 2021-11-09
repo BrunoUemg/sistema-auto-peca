@@ -115,6 +115,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
         tbFisica = new javax.swing.JTable();
         btnAlterar = new javax.swing.JButton();
         btnExcluirF = new javax.swing.JButton();
+        btnNovoF = new javax.swing.JButton();
         PanelJuridica = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         txtCidadeJ = new javax.swing.JTextField();
@@ -146,6 +147,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
         tbJuridica = new javax.swing.JTable();
         btnAlterarJ = new javax.swing.JButton();
         excluirJ = new javax.swing.JButton();
+        btnNovo = new javax.swing.JButton();
 
         setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         setClosable(true);
@@ -228,6 +230,13 @@ public class ClienteView extends javax.swing.JInternalFrame {
             }
         });
 
+        btnNovoF.setText("Novo");
+        btnNovoF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoFActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -261,7 +270,10 @@ public class ClienteView extends javax.swing.JInternalFrame {
                                         .addComponent(jLabel6)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(txtNumeroF, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addComponent(btnCadastrarF))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnNovoF, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnCadastrarF)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -342,7 +354,8 @@ public class ClienteView extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCadastrarF)
                     .addComponent(btnAlterar)
-                    .addComponent(btnExcluirF))
+                    .addComponent(btnExcluirF)
+                    .addComponent(btnNovoF))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -440,6 +453,13 @@ public class ClienteView extends javax.swing.JInternalFrame {
             }
         });
 
+        btnNovo.setText("Novo");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -467,7 +487,10 @@ public class ClienteView extends javax.swing.JInternalFrame {
                             .addComponent(txtBairroJ, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(btnCadastrarJ)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(btnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnCadastrarJ))
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(txtEnderecoJ, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -552,7 +575,8 @@ public class ClienteView extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCadastrarJ)
                     .addComponent(btnAlterarJ)
-                    .addComponent(excluirJ))
+                    .addComponent(excluirJ)
+                    .addComponent(btnNovo))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25))
@@ -590,6 +614,12 @@ public class ClienteView extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCadastrarFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarFActionPerformed
+          if(txtNomeF.getText().isEmpty() || txtCPF.getText().isEmpty() || txtBairroF.getText().isEmpty()|| txtDtaNascimento.getText().isEmpty()){
+          JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios");
+          txtNomeF.requestFocus();
+      }
+      else{
+        
         clienteFisico = new ClienteFisico();
         clienteFisico.setNome(txtNomeF.getText());
         clienteFisico.setEndereco(txtEnderecoF.getText());
@@ -621,6 +651,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
         }
         JOptionPane.showMessageDialog(null, "Gravado com Sucesso");
         limpaCamposF();
+          }
     }//GEN-LAST:event_btnCadastrarFActionPerformed
 
     private void txtDtaNascimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDtaNascimentoActionPerformed
@@ -628,6 +659,12 @@ public class ClienteView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtDtaNascimentoActionPerformed
 
     private void btnCadastrarJActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarJActionPerformed
+             if(txtNomeF.getText().isEmpty() || txtCNPJ.getText().isEmpty() || txtBairroJ.getText().isEmpty()|| txtInscrEstadual.getText().isEmpty()){
+          JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios");
+          txtNomeF.requestFocus();
+      }
+      else{
+        
         clienteJuridico = new ClienteJuridico();
         clienteJuridico.setNome(txtNomeJ.getText());
         clienteJuridico.setEndereco(txtEnderecoJ.getText());
@@ -658,6 +695,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
         }
         JOptionPane.showMessageDialog(null, "Gravado com Sucesso");
         limpaCamposJ();
+             }
     }//GEN-LAST:event_btnCadastrarJActionPerformed
 
     private void tbFisicaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbFisicaMouseClicked
@@ -717,7 +755,11 @@ public class ClienteView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tbJuridicaMouseClicked
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-
+          if(txtNomeF.getText().isEmpty() ){
+          JOptionPane.showMessageDialog(null, "Selecione um cliente na tabela");
+          txtNomeF.requestFocus();
+      }
+      else{
         clienteFisico = new ClienteFisico();
         clienteFisico.setNome(txtNomeF.getText());
         clienteFisico.setEndereco(txtEnderecoF.getText());
@@ -752,9 +794,16 @@ public class ClienteView extends javax.swing.JInternalFrame {
 
         JOptionPane.showMessageDialog(null, "Alterado com Sucesso");
         limpaCamposF();
+          }
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnAlterarJActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarJActionPerformed
+        if(txtNomeJ.getText().isEmpty() ){
+          JOptionPane.showMessageDialog(null, "Selecione um cliente na tabela");
+          txtNomeJ.requestFocus();
+      }
+      else{
+        
         clienteJuridico = new ClienteJuridico();
         clienteJuridico.setNome(txtNomeJ.getText());
         clienteJuridico.setEndereco(txtEnderecoJ.getText());
@@ -786,6 +835,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
         }
         JOptionPane.showMessageDialog(null, "Alterado com Sucesso");
         limpaCamposJ();
+        }
     }//GEN-LAST:event_btnAlterarJActionPerformed
 
     private void excluirJActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirJActionPerformed
@@ -831,6 +881,14 @@ public class ClienteView extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnExcluirFActionPerformed
 
+    private void btnNovoFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoFActionPerformed
+      limpaCamposF();
+    }//GEN-LAST:event_btnNovoFActionPerformed
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+      limpaCamposJ();
+    }//GEN-LAST:event_btnNovoActionPerformed
+
     public void limpaCamposF() {
 
         txtNomeF.setText("");
@@ -875,6 +933,8 @@ public class ClienteView extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnCadastrarF;
     private javax.swing.JButton btnCadastrarJ;
     private javax.swing.JButton btnExcluirF;
+    private javax.swing.JButton btnNovo;
+    private javax.swing.JButton btnNovoF;
     private javax.swing.JButton excluirJ;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
