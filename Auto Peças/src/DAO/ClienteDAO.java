@@ -197,4 +197,93 @@ public class ClienteDAO {
         pst.close();
         return clij;
     }
+    
+    
+       public void alterarF(ClienteFisico cliente) throws SQLException{
+        sql = "update cliente set nome=?, endereco=?, bairro=?, celular=?, telefone=?, cidade=?, cep=?, numero=?, email=? where idcliente=?";
+        pst = Conexao.getInstance().prepareStatement(sql);
+        pst.setString(1, cliente.getNome());
+        pst.setString(2, cliente.getEndereco());
+        pst.setString(3, cliente.getBairro());
+        pst.setString(4, cliente.getCelular());
+        pst.setString(5, cliente.getTelefone());
+        pst.setString(6, cliente.getCidade());
+        pst.setString(7, cliente.getCep());
+        pst.setString(8, cliente.getNumero());
+        pst.setString(9, cliente.getEmail());
+        
+        pst.setInt(10, cliente.getIdCliente());
+        pst.execute();
+        
+        sql = "update cliente_fisico set cpf=?, rg=?, dtNascimento=?  where idcliente=?";
+        pst = Conexao.getInstance().prepareStatement(sql);
+        pst.setString(1, cliente.getCpf());
+        pst.setString(2, cliente.getRg());
+        sdf = new SimpleDateFormat("yyyy-MM-dd");
+        java.sql.Date date = java.sql.Date.valueOf(sdf.format(cliente.getDtaNascimento()));
+        pst.setDate(3, date);
+        
+        pst.setInt(4, cliente.getIdCliente());
+        pst.executeUpdate();
+        pst.close();
+    }
+       public void alterarJ(ClienteJuridico cliente) throws SQLException{
+        sql = "update cliente set nome=?, endereco=?, bairro=?, celular=?, telefone=?, cidade=?, cep=?, numero=?, email=? where idcliente=?";
+        pst = Conexao.getInstance().prepareStatement(sql);
+        pst.setString(1, cliente.getNome());
+        pst.setString(2, cliente.getEndereco());
+        pst.setString(3, cliente.getBairro());
+        pst.setString(4, cliente.getCelular());
+        pst.setString(5, cliente.getTelefone());
+        pst.setString(6, cliente.getCidade());
+        pst.setString(7, cliente.getCep());
+        pst.setString(8, cliente.getNumero());
+        pst.setString(9, cliente.getEmail());
+        pst.executeUpdate();
+//        pst.execute();
+        
+        pst.setInt(10, cliente.getIdCliente());
+       
+        
+        
+        sql = "update cliente_juridico set cnpj=?, inscricaoEstadual=?, fundacao=?  where idcliente=?";
+        pst = Conexao.getInstance().prepareStatement(sql);
+        pst.setString(1, cliente.getCnpj());
+        pst.setString(2, cliente.getInscricaoEstadual());
+        sdf = new SimpleDateFormat("yyyy-MM-dd");
+        java.sql.Date date = java.sql.Date.valueOf(sdf.format(cliente.getFundacao()));
+        pst.setDate(3, date);
+        
+        pst.setInt(4, cliente.getIdCliente());
+        pst.executeUpdate();
+        pst.close();
+    }
+       
+        public void excluirJ(ClienteJuridico cliente) throws SQLException{
+        sql = "delete from cliente_juridico where idcliente=?";
+        pst = Conexao.getInstance().prepareStatement(sql);
+        pst.setInt(1, cliente.getIdCliente());
+        pst.execute();
+        sql = "delete from cliente where idcliente=?";
+        pst = Conexao.getInstance().prepareStatement(sql);
+        pst.setInt(1, cliente.getIdCliente());
+        pst.execute();
+        pst.close();
+    }
+        
+               public void excluirF(ClienteFisico cliente) throws SQLException{
+        sql = "delete from cliente_fisico where idcliente=?";
+        pst = Conexao.getInstance().prepareStatement(sql);
+        pst.setInt(1, cliente.getIdCliente());
+        pst.execute();
+        sql = "delete from cliente where idcliente=?";
+        pst = Conexao.getInstance().prepareStatement(sql);
+        pst.setInt(1, cliente.getIdCliente());
+        pst.execute();
+        pst.close();
+    }
+
+
 }
+
+
