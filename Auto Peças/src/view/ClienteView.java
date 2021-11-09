@@ -659,7 +659,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtDtaNascimentoActionPerformed
 
     private void btnCadastrarJActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarJActionPerformed
-             if(txtNomeF.getText().isEmpty() || txtCNPJ.getText().isEmpty() || txtBairroJ.getText().isEmpty()|| txtInscrEstadual.getText().isEmpty()){
+             if(txtNomeJ.getText().isEmpty() || txtCNPJ.getText().isEmpty() || txtBairroJ.getText().isEmpty()|| txtInscrEstadual.getText().isEmpty()){
           JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios");
           txtNomeF.requestFocus();
       }
