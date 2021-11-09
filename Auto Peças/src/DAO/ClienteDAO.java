@@ -239,6 +239,7 @@ public class ClienteDAO {
         pst.setString(7, cliente.getCep());
         pst.setString(8, cliente.getNumero());
         pst.setString(9, cliente.getEmail());
+        pst.setInt(10, cliente.getIdCliente());
         pst.executeUpdate();
 //        pst.execute();
         
