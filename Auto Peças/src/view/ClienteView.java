@@ -7,6 +7,8 @@ package view;
 
 import DAO.ClienteDAO;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -51,7 +53,6 @@ public class ClienteView extends javax.swing.JInternalFrame {
         txtBairroF = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        txtDtaNascimento = new javax.swing.JTextField();
         txtNumeroF = new javax.swing.JTextField();
         btnCadastrarF = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
@@ -69,6 +70,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
         txtCPF = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
         txtEmailF = new javax.swing.JTextField();
+        txtDtaNascimento = new javax.swing.JFormattedTextField();
         PanelJuridica = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         txtCidadeJ = new javax.swing.JTextField();
@@ -132,6 +134,13 @@ public class ClienteView extends javax.swing.JInternalFrame {
         jLabel4.setText("Endereço:");
 
         jLabel23.setText("E-mail:");
+
+        txtDtaNascimento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        txtDtaNascimento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDtaNascimentoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -239,7 +248,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
                     .addComponent(txtBairroF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36)
                 .addComponent(btnCadastrarF)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout PanelFisicaLayout = new javax.swing.GroupLayout(PanelFisica);
@@ -427,7 +436,18 @@ public class ClienteView extends javax.swing.JInternalFrame {
         clienteFisico.setCelular(txtCelularF.getText());
         clienteFisico.setEndereco(txtEnderecoF.getText());
         clienteFisico.setEmail(txtEmailF.getText());
-        System.out.println(clienteFisico.getNome());
+        clienteFisico.setCpf(txtCPF.getText());
+        clienteFisico.setRg(txtRG.getText());
+        String text = txtDtaNascimento.getText();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        java.util.Date textFieldAsDate = null;
+
+        try {
+            textFieldAsDate = sdf.parse(text);
+        } catch (ParseException pe) {
+            // deal with ParseException
+        }
+        clienteFisico.setDtaNascimento(textFieldAsDate);
         try {
             clienteDAO.salvarF(clienteFisico);
         } catch (SQLException ex) {
@@ -435,6 +455,10 @@ public class ClienteView extends javax.swing.JInternalFrame {
         }
         JOptionPane.showMessageDialog(null, "Gravado com Sucesso");
     }//GEN-LAST:event_btnCadastrarFActionPerformed
+
+    private void txtDtaNascimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDtaNascimentoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDtaNascimentoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -479,7 +503,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtCelularJ;
     private javax.swing.JTextField txtCidadeF;
     private javax.swing.JTextField txtCidadeJ;
-    private javax.swing.JTextField txtDtaNascimento;
+    private javax.swing.JFormattedTextField txtDtaNascimento;
     private javax.swing.JTextField txtEmailF;
     private javax.swing.JTextField txtEmailJ;
     private javax.swing.JTextField txtEnderecoF;

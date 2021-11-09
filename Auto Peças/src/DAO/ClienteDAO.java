@@ -5,11 +5,13 @@
  */
 package DAO;
 
+import java.sql.Date;
 import model.ClienteFisico;
 import model.ClienteJuridico;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -19,6 +21,8 @@ public class ClienteDAO {
 
     PreparedStatement pst;
     String sql;
+    int idCliente;
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     public void salvarF(ClienteFisico clienteFisico) throws SQLException {
         sql = "INSERT INTO cliente values(?,?,?,?,?,?,?,?,?,?)";
@@ -39,11 +43,22 @@ public class ClienteDAO {
         }
         try (ResultSet generatedKeys = pst.getGeneratedKeys()) {
             if (generatedKeys.next()) {
-                System.out.println(generatedKeys.getLong(1));
+                idCliente = (int) generatedKeys.getLong(1);
             } else {
                 throw new SQLException("Erro ao criar o cliente, nenhum ID obtido!");
             }
         }
+        sql = "INSERT INTO cliente_fisico values(?,?,?,?,?)";
+        System.out.println(clienteFisico.getCpf());
+        pst = Conexao.getInstance().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+        pst.setInt(1, 0);
+        pst.setString(2, clienteFisico.getCpf());
+        pst.setString(3, clienteFisico.getRg());
+        sdf = new SimpleDateFormat("yyyy-MM-dd");
+        java.sql.Date date = java.sql.Date.valueOf(sdf.format(clienteFisico.getDtaNascimento()));
+        pst.setDate(4,date);
+        pst.setInt(5, idCliente);
+        pst.executeUpdate();
 //        pst.execute();
         pst.close();
     }
