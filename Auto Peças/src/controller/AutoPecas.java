@@ -5,6 +5,8 @@
  */
 package controller;
 
+import view.Principal;
+
 /**
  *
  * @author Bruno
@@ -15,7 +17,7 @@ public class AutoPecas {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Principal principal = new Principal();
     }
-    
+
 }
