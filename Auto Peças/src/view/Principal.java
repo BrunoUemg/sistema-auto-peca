@@ -34,6 +34,8 @@ public class Principal extends javax.swing.JFrame {
         pnlPrincipal = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        btnClientes = new javax.swing.JMenuItem();
+        btnFornecedores = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -57,7 +59,23 @@ public class Principal extends javax.swing.JFrame {
 
         jMenu1.setText("Cadastro");
 
-        jMenuItem1.setText("Clientes");
+        btnClientes.setText("Clientes");
+        btnClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClientesActionPerformed(evt);
+            }
+        });
+        jMenu1.add(btnClientes);
+
+        btnFornecedores.setText("Fornecedores");
+        btnFornecedores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFornecedoresActionPerformed(evt);
+            }
+        });
+        jMenu1.add(btnFornecedores);
+
+        jMenuItem1.setText("Produtos");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
@@ -95,17 +113,33 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
         ClienteView cliente;
         cliente = new ClienteView();
         pnlPrincipal.removeAll();
         pnlPrincipal.add(cliente);
         pnlPrincipal.updateUI();
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_btnClientesActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
          this.dispose();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void btnFornecedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFornecedoresActionPerformed
+        FornecedorView fornecedor;
+        fornecedor = new FornecedorView();
+        pnlPrincipal.removeAll();
+        pnlPrincipal.add(fornecedor);
+        pnlPrincipal.updateUI();
+    }//GEN-LAST:event_btnFornecedoresActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        ProdutoView produto;
+        produto = new ProdutoView();
+        pnlPrincipal.removeAll();
+        pnlPrincipal.add(produto);
+        pnlPrincipal.updateUI();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -143,6 +177,8 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem btnClientes;
+    private javax.swing.JMenuItem btnFornecedores;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
