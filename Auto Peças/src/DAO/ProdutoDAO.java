@@ -90,5 +90,23 @@ public class ProdutoDAO {
         pst.close();
         return prod;
     }
+    
+    public String alterarProduto(Produto produto) throws SQLException {
+        sql = "update produto set nome=?, descricao=?, quantidadeMin=?, codigoBarras=?, idCategoria=?, idMarca=? where idProduto=?";
+        pst = Conexao.getInstance().prepareStatement(sql);
+        pst.setString(1, produto.getNome());
+        pst.setString(2, produto.getDescricao());
+        pst.setInt(3, produto.getQuantidadeMin());
+        pst.setString(4, produto.getCodigoBarras());
+        pst.setInt(5, produto.getIdCategoria());
+        pst.setInt(6, produto.getIdMarca());
+        pst.setInt(7, produto.getIdProduto());
+        int rows = pst.executeUpdate();
+        pst.close();
+        if (rows == 1) {
+            return "Alterado com sucesso!";
+        }
+        return "Erro ao alterar!";
+    }
 
 }

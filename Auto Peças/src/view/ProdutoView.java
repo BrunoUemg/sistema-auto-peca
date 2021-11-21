@@ -103,6 +103,11 @@ public class ProdutoView extends javax.swing.JInternalFrame {
         btnNovo.setText("Novo");
 
         btnAlterar.setText("Alterar");
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setText("Excluir");
 
@@ -366,7 +371,7 @@ public class ProdutoView extends javax.swing.JInternalFrame {
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         produto = new Produto();
         Categoria categoriaitem = (Categoria) cbCategoria.getSelectedItem();
-        Marca marca = (Marca) cbMarca.getSelectedItem();
+        marca = (Marca) cbMarca.getSelectedItem();
         produto.setNome(txtNome.getText());
         produto.setDescricao(txtDescricao.getText());
         produto.setQuantidadeMin(Integer.parseInt(txtQtdMin.getText()));
@@ -406,6 +411,34 @@ public class ProdutoView extends javax.swing.JInternalFrame {
             }
         }
     }//GEN-LAST:event_tbProdutosMouseClicked
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        if (txtNome.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Selecione um produto na tabela");
+            txtNome.requestFocus();
+        } else {
+
+            produto = new Produto();
+            Categoria categoriaitem = (Categoria) cbCategoria.getSelectedItem();
+            marca = (Marca) cbMarca.getSelectedItem();
+            produto.setNome(txtNome.getText());
+            produto.setDescricao(txtDescricao.getText());
+            produto.setQuantidadeMin(Integer.parseInt(txtQtdMin.getText()));
+            produto.setQuantidadeEstoque(0);
+            produto.setValorCompra(0);
+            produto.setValorSaida(0);
+            produto.setCodigoBarras(txtCodigoBarras.getText());
+            produto.setIdCategoria(categoriaitem.getIdCategoria());
+            produto.setIdMarca(marca.getIdMarca());
+            produto.setIdProduto(Integer.parseInt(txtCodigo.getText()));
+            try {
+                JOptionPane.showMessageDialog(null, produtoDAO.alterarProduto(produto));
+                readJTableProduto();
+            } catch (SQLException ex) {
+                Logger.getLogger(FornecedorView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnAlterarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
