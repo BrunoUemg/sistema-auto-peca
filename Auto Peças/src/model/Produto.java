@@ -18,14 +18,16 @@ public class Produto {
     private int quantidadeEstoque;
     private float valorCompra;
     private float valorSaida;
-    private int codigoBarras;
+    private String codigoBarras;
     private int idCategoria;
     private int idMarca;
+    private String nomeCategoria;
+    private String nomeMarca;
 
     public Produto() {
     }
 
-    public Produto(int idProduto, String nome, String descricao, int quantidadeMin, int quantidadeEstoque, float valorCompra, float valorSaida, int codigoBarras, int idCategoria, int idMarca) {
+    public Produto(int idProduto, String nome, String descricao, int quantidadeMin, int quantidadeEstoque, float valorCompra, float valorSaida, String codigoBarras, int idCategoria, int idMarca, String nomeCategoria, String nomeMarca) {
         this.idProduto = idProduto;
         this.nome = nome;
         this.descricao = descricao;
@@ -36,6 +38,25 @@ public class Produto {
         this.codigoBarras = codigoBarras;
         this.idCategoria = idCategoria;
         this.idMarca = idMarca;
+        this.nomeCategoria = nomeCategoria;
+        this.nomeMarca = nomeMarca;
+    }
+
+    
+    public String getNomeCategoria() {
+        return nomeCategoria;
+    }
+
+    public void setNomeCategoria(String nomeCategoria) {
+        this.nomeCategoria = nomeCategoria;
+    }
+
+    public String getNomeMarca() {
+        return nomeMarca;
+    }
+
+    public void setNomeMarca(String nomeMarca) {
+        this.nomeMarca = nomeMarca;
     }
 
     public int getIdProduto() {
@@ -94,11 +115,11 @@ public class Produto {
         this.valorSaida = valorSaida;
     }
 
-    public int getCodigoBarras() {
+    public String getCodigoBarras() {
         return codigoBarras;
     }
 
-    public void setCodigoBarras(int codigoBarras) {
+    public void setCodigoBarras(String codigoBarras) {
         this.codigoBarras = codigoBarras;
     }
 

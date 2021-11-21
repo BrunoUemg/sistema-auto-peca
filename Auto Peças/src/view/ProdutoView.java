@@ -5,7 +5,9 @@
  */
 package view;
 
+import DAO.CategoriaDAO;
 import DAO.Conexao;
+import DAO.MarcaDAO;
 import DAO.ProdutoDAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +15,9 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.Categoria;
+import model.Marca;
 import model.Produto;
 
 /**
@@ -25,16 +30,21 @@ public class ProdutoView extends javax.swing.JInternalFrame {
     String sql;
     Produto produto;
     ProdutoDAO produtoDAO;
+    Categoria categoria;
+    CategoriaDAO categoriaDAO;
+    MarcaDAO marcaDAO;
+    Marca marca;
 
     /**
      * Creates new form Fornecedor
      */
-    public ProdutoView() {
+    public ProdutoView() throws SQLException {
         produtoDAO = new ProdutoDAO();
         initComponents();
         this.setVisible(true);
         carregaCategoria();
         carregaMarca();
+        readJTableProduto();
     }
 
     /**
@@ -71,7 +81,7 @@ public class ProdutoView extends javax.swing.JInternalFrame {
         txtCodigoBarras = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         tbFornecedor = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbProdutos = new javax.swing.JTable();
 
         setClosable(true);
         setTitle("Produtos");
@@ -87,6 +97,8 @@ public class ProdutoView extends javax.swing.JInternalFrame {
         jLabel6.setText("Categoria");
 
         jLabel7.setText("Marca");
+
+        txtCodigo.setEditable(false);
 
         btnNovo.setText("Novo");
 
@@ -222,7 +234,7 @@ public class ProdutoView extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -241,11 +253,16 @@ public class ProdutoView extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        tbFornecedor.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
+        tbProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbProdutosMouseClicked(evt);
+            }
+        });
+        tbFornecedor.setViewportView(tbProdutos);
+        if (tbProdutos.getColumnModel().getColumnCount() > 0) {
+            tbProdutos.getColumnModel().getColumn(0).setResizable(false);
+            tbProdutos.getColumnModel().getColumn(2).setResizable(false);
+            tbProdutos.getColumnModel().getColumn(3).setResizable(false);
         }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -292,67 +309,103 @@ public class ProdutoView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cbCategoriaActionPerformed
 
     private void btnCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoriaActionPerformed
-        // TODO add your handling code here:
+        categoria = new Categoria();
+        categoria.setDescricaoCategoria(txtCategoria.getText());
+        try {
+            JOptionPane.showMessageDialog(null, categoriaDAO.salvarCategoria(categoria));
+            carregaCategoria();
+        } catch (SQLException ex) {
+            Logger.getLogger(FornecedorView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnCategoriaActionPerformed
 
     private void btnCategoria1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoria1ActionPerformed
-        // TODO add your handling code here:
+        marca = new Marca();
+        marca.setNomeMarca(txtMarca.getText());
+        try {
+            JOptionPane.showMessageDialog(null, marcaDAO.salvarMarca(marca));
+            carregaMarca();
+        } catch (SQLException ex) {
+            Logger.getLogger(FornecedorView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnCategoria1ActionPerformed
 
-    public void carregaCategoria() {
-        ResultSet rs = null;
-        try {
-            cbCategoria.addItem("Selecione uma Categoria");
-            sql = "SELECT * FROM categoria";
-            pst = Conexao.getInstance().prepareStatement(sql);
-            rs = pst.executeQuery();
-            while (rs.next()) {
-                cbCategoria.addItem(rs.getString("descricaoCategoria"));
-            }
-            rs.close();
-            pst.close();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null,
-                    "Ocorreu erro ao carregar a Combo Box", "Erro",
-                    JOptionPane.ERROR_MESSAGE);
+    public void carregaCategoria() throws SQLException {
+        cbCategoria.removeAllItems();
+        categoriaDAO = new CategoriaDAO();
+
+        for (Categoria c : categoriaDAO.read()) {
+            cbCategoria.addItem(c);
         }
     }
-    
-    public void carregaMarca() {
-        ResultSet rs = null;
-        try {
-            cbMarca.addItem("Selecione uma Marca");
-            sql = "SELECT * FROM marca";
-            pst = Conexao.getInstance().prepareStatement(sql);
-            rs = pst.executeQuery();
-            while (rs.next()) {
-                cbMarca.addItem(rs.getString("nomeMarca"));
-            }
-            rs.close();
-            pst.close();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null,
-                    "Ocorreu erro ao carregar a Combo Box", "Erro",
-                    JOptionPane.ERROR_MESSAGE);
+
+    public void carregaMarca() throws SQLException {
+        cbMarca.removeAllItems();
+        marcaDAO = new MarcaDAO();
+
+        for (Marca m : marcaDAO.read()) {
+            cbMarca.addItem(m);
         }
     }
-    
+
+    public void readJTableProduto() throws SQLException {
+        DefaultTableModel modelF = (DefaultTableModel) tbProdutos.getModel();
+        modelF.setNumRows(0);
+        for (Produto p : produtoDAO.readProduto()) {
+            modelF.addRow(new Object[]{
+                p.getIdProduto(),
+                p.getNome(),
+                p.getQuantidadeMin(),
+                p.getNomeCategoria(),
+                p.getNomeMarca()
+            });
+
+        }
+    }
+
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         produto = new Produto();
+        Categoria categoriaitem = (Categoria) cbCategoria.getSelectedItem();
+        Marca marca = (Marca) cbMarca.getSelectedItem();
         produto.setNome(txtNome.getText());
         produto.setDescricao(txtDescricao.getText());
         produto.setQuantidadeMin(Integer.parseInt(txtQtdMin.getText()));
         produto.setQuantidadeEstoque(0);
         produto.setValorCompra(0);
         produto.setValorSaida(0);
-        produto.setCodigoBarras(Integer.parseInt(txtCodigoBarras.getText()));
-        produto.setIdCategoria(Integer.parseInt((String) cbCategoria.getSelectedItem()));
+        produto.setCodigoBarras(txtCodigoBarras.getText());
+        produto.setIdCategoria(categoriaitem.getIdCategoria());
+        produto.setIdMarca(marca.getIdMarca());
         try {
-            produtoDAO.salvarProduto(produto);
+            JOptionPane.showMessageDialog(null, produtoDAO.salvarProduto(produto));
+            readJTableProduto();
         } catch (SQLException ex) {
             Logger.getLogger(FornecedorView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void tbProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbProdutosMouseClicked
+        if (tbProdutos.getSelectedRow() != -1) {
+            try {
+                marca = new Marca();
+                categoria = new Categoria();
+                produto = produtoDAO.BuscarProduto(tbProdutos.getValueAt(tbProdutos.getSelectedRow(), 0).toString());
+                marca.setIdMarca(produto.getIdMarca());
+                marca.setNomeMarca(produto.getNomeMarca());
+                categoria.setIdCategoria(produto.getIdCategoria());
+                categoria.setDescricaoCategoria(produto.getNomeCategoria());
+                txtCodigo.setText(String.valueOf(produto.getIdProduto()));
+                txtNome.setText(produto.getNome());
+                txtDescricao.setText(produto.getDescricao());
+                txtQtdMin.setText(String.valueOf(produto.getQuantidadeMin()));
+                txtCodigoBarras.setText(produto.getCodigoBarras());
+                cbCategoria.setSelectedItem(categoria);
+                cbMarca.setSelectedItem(marca);
+            } catch (SQLException ex) {
+                Logger.getLogger(FornecedorView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_tbProdutosMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -363,8 +416,8 @@ public class ProdutoView extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnSalvar;
-    private javax.swing.JComboBox<String> cbCategoria;
-    private javax.swing.JComboBox<String> cbMarca;
+    private javax.swing.JComboBox<Object> cbCategoria;
+    private javax.swing.JComboBox<Object> cbMarca;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel3;
@@ -373,8 +426,8 @@ public class ProdutoView extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JScrollPane tbFornecedor;
+    private javax.swing.JTable tbProdutos;
     private javax.swing.JTextField txtCategoria;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtCodigoBarras;

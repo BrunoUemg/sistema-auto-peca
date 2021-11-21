@@ -8,7 +8,10 @@ package DAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Produto;
 
 /**
@@ -33,7 +36,7 @@ public class ProdutoDAO {
         pst.setInt(5, produto.getQuantidadeEstoque());
         pst.setFloat(6, produto.getValorCompra());
         pst.setFloat(7, produto.getValorSaida());
-        pst.setInt(8, produto.getCodigoBarras());
+        pst.setString(8, produto.getCodigoBarras());
         pst.setInt(9, produto.getIdCategoria());
         pst.setInt(10, produto.getIdMarca());
         int row = pst.executeUpdate();
@@ -42,6 +45,50 @@ public class ProdutoDAO {
             return "Produto Salvo com sucesso!";
         }
         return "Erro ao salvar produto!";
+    }
+    
+    public List<Produto> readProduto() throws SQLException {
+        ResultSet rs = null;
+        List<Produto> produtos = new ArrayList<>();
+        try {
+            sql = "SELECT * FROM produto INNER JOIN categoria ON produto.idCategoria = categoria.idCategoria INNER JOIN marca ON produto.idMarca = marca.idMarca";
+            pst = Conexao.getInstance().prepareStatement(sql);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Produto produto = new Produto();
+                produto.setIdProduto(rs.getInt("idProduto"));
+                produto.setNome(rs.getString("nome"));
+                produto.setDescricao(rs.getString("descricao"));
+                produto.setQuantidadeMin(rs.getInt("quantidadeMin"));
+                produto.setQuantidadeEstoque(rs.getInt("quantidadeEstoque"));
+                produto.setValorCompra(rs.getFloat("valorCompra"));
+                produto.setValorSaida(rs.getFloat("valorSaida"));
+                produto.setCodigoBarras(rs.getString("codigoBarras"));
+                produto.setIdCategoria(rs.getInt("idCategoria"));
+                produto.setIdMarca(rs.getInt("idMarca"));
+                produto.setNomeCategoria(rs.getString("descricaoCategoria"));
+                produto.setNomeMarca(rs.getString("nomeMarca"));
+                produtos.add(produto);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            pst.close();
+        }
+        return produtos;
+    }
+    
+    public Produto BuscarProduto(String codigo) throws SQLException {
+        sql = "SELECT * FROM produto INNER JOIN categoria ON produto.idCategoria = categoria.idCategoria INNER JOIN marca ON produto.IdMarca = marca.idMarca WHERE idProduto = " + codigo;
+        pst = Conexao.getInstance().prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+        Produto prod = null;
+        while (rs.next()) {
+            prod = new Produto(rs.getInt("idProduto"), rs.getString("nome"), rs.getString("descricao"), rs.getInt("quantidadeMin"), rs.getInt("quantidadeEstoque"), rs.getFloat("valorCompra"), rs.getFloat("valorSaida"), rs.getString("codigoBarras"), rs.getInt("idCategoria"), rs.getInt("idMarca"), rs.getString("descricaoCategoria"),rs.getString("nomeMarca"));
+        }
+        pst.close();
+        return prod;
     }
 
 }

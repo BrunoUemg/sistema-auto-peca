@@ -5,6 +5,9 @@
  */
 package view;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
@@ -134,11 +137,15 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnFornecedoresActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        ProdutoView produto;
-        produto = new ProdutoView();
-        pnlPrincipal.removeAll();
-        pnlPrincipal.add(produto);
-        pnlPrincipal.updateUI();
+        try {
+            ProdutoView produto;
+            produto = new ProdutoView();
+            pnlPrincipal.removeAll();
+            pnlPrincipal.add(produto);
+            pnlPrincipal.updateUI();
+        } catch (SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
