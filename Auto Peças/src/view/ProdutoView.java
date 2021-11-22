@@ -79,6 +79,7 @@ public class ProdutoView extends javax.swing.JInternalFrame {
         btnCategoria1 = new javax.swing.JButton();
         txtQtdMin = new javax.swing.JTextField();
         txtCodigoBarras = new javax.swing.JTextField();
+        btnCancelar = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         tbFornecedor = new javax.swing.JScrollPane();
         tbProdutos = new javax.swing.JTable();
@@ -100,9 +101,17 @@ public class ProdutoView extends javax.swing.JInternalFrame {
 
         txtCodigo.setEditable(false);
 
+        txtNome.setEnabled(false);
+
         btnNovo.setText("Novo");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
 
         btnAlterar.setText("Alterar");
+        btnAlterar.setEnabled(false);
         btnAlterar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAlterarActionPerformed(evt);
@@ -110,8 +119,15 @@ public class ProdutoView extends javax.swing.JInternalFrame {
         });
 
         btnExcluir.setText("Excluir");
+        btnExcluir.setEnabled(false);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnSalvar.setText("Salvar");
+        btnSalvar.setEnabled(false);
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalvarActionPerformed(evt);
@@ -126,6 +142,8 @@ public class ProdutoView extends javax.swing.JInternalFrame {
 
         jLabel14.setText("Nome");
 
+        txtDescricao.setEnabled(false);
+
         btnCategoria.setText("Cadastrar Categoria");
         btnCategoria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -137,6 +155,14 @@ public class ProdutoView extends javax.swing.JInternalFrame {
         btnCategoria1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCategoria1ActionPerformed(evt);
+            }
+        });
+
+        btnCancelar.setText("Cancelar");
+        btnCancelar.setEnabled(false);
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
             }
         });
 
@@ -192,7 +218,9 @@ public class ProdutoView extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnExcluir)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSalvar)))
+                        .addComponent(btnSalvar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCancelar)))
                 .addContainerGap(602, Short.MAX_VALUE))
         );
         PanelFornecedorLayout.setVerticalGroup(
@@ -235,7 +263,8 @@ public class ProdutoView extends javax.swing.JInternalFrame {
                     .addComponent(btnNovo)
                     .addComponent(btnAlterar)
                     .addComponent(btnExcluir)
-                    .addComponent(btnSalvar))
+                    .addComponent(btnSalvar)
+                    .addComponent(btnCancelar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -314,6 +343,10 @@ public class ProdutoView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cbCategoriaActionPerformed
 
     private void btnCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoriaActionPerformed
+         if(txtCategoria.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Preencha o campo");
+            txtCategoria.requestFocus();
+        }else{
         categoria = new Categoria();
         categoria.setDescricaoCategoria(txtCategoria.getText());
         try {
@@ -322,9 +355,16 @@ public class ProdutoView extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(FornecedorView.class.getName()).log(Level.SEVERE, null, ex);
         }
+        desabilitaCat();
+         }
     }//GEN-LAST:event_btnCategoriaActionPerformed
 
     private void btnCategoria1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoria1ActionPerformed
+        if(txtMarca.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Preencha o campo");
+            txtMarca.requestFocus();
+        }else{
+        
         marca = new Marca();
         marca.setNomeMarca(txtMarca.getText());
         try {
@@ -332,6 +372,8 @@ public class ProdutoView extends javax.swing.JInternalFrame {
             carregaMarca();
         } catch (SQLException ex) {
             Logger.getLogger(FornecedorView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        desabilitaMarc();
         }
     }//GEN-LAST:event_btnCategoria1ActionPerformed
 
@@ -369,6 +411,11 @@ public class ProdutoView extends javax.swing.JInternalFrame {
     }
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        if(txtNome.getText().isEmpty() || txtDescricao.getText().isEmpty() || txtQtdMin.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos");
+            txtNome.requestFocus();
+        }else{
+        
         produto = new Produto();
         Categoria categoriaitem = (Categoria) cbCategoria.getSelectedItem();
         marca = (Marca) cbMarca.getSelectedItem();
@@ -381,11 +428,14 @@ public class ProdutoView extends javax.swing.JInternalFrame {
         produto.setCodigoBarras(txtCodigoBarras.getText());
         produto.setIdCategoria(categoriaitem.getIdCategoria());
         produto.setIdMarca(marca.getIdMarca());
+        
         try {
             JOptionPane.showMessageDialog(null, produtoDAO.salvarProduto(produto));
             readJTableProduto();
         } catch (SQLException ex) {
             Logger.getLogger(FornecedorView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        desabilita();
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
@@ -406,6 +456,7 @@ public class ProdutoView extends javax.swing.JInternalFrame {
                 txtCodigoBarras.setText(produto.getCodigoBarras());
                 cbCategoria.setSelectedItem(categoria);
                 cbMarca.setSelectedItem(marca);
+                preparaAlterar();
             } catch (SQLException ex) {
                 Logger.getLogger(FornecedorView.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -438,12 +489,84 @@ public class ProdutoView extends javax.swing.JInternalFrame {
                 Logger.getLogger(FornecedorView.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        desabilita();
+      
     }//GEN-LAST:event_btnAlterarActionPerformed
 
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        preparaNovo();
+    }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+      desabilita();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        produto.setIdProduto((int) tbProdutos.getValueAt(tbProdutos.getSelectedRow(), 0));
+            int confirma = JOptionPane.showConfirmDialog(null, "Deseja excluir:" + txtNome.getText());
+            if (confirma == 0) {
+               
+                JOptionPane.showMessageDialog(null, "Excluido com sucesso");
+                desabilita();
+            }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    
+    public void preparaNovo(){
+        btnSalvar.setEnabled(true);
+        btnCancelar.setEnabled(true);
+        txtCodigoBarras.setText("");
+        txtCodigo.setText("");
+        txtDescricao.setText("");
+        txtNome.setText("");
+        txtQtdMin.setText("");
+        txtNome.setEnabled(true);
+        txtDescricao.setEnabled(true);
+        btnNovo.setEnabled(false);
+        
+    }
+    
+    
+    public void desabilitaCat(){
+        txtCategoria.setText("");
+    }
+     public void desabilitaMarc(){
+        txtMarca.setText("");
+    }
+    
+    public void desabilita(){
+        txtCodigoBarras.setText("");
+        txtCodigo.setText("");
+        txtDescricao.setText("");
+        txtNome.setText("");
+        txtQtdMin.setText("");
+        txtMarca.setText("");
+        txtCategoria.setText("");
+        btnSalvar.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        btnCancelar.setEnabled(false);
+        txtNome.setEnabled(false);
+        txtDescricao.setEnabled(false);
+        btnNovo.setEnabled(true);
+    }
+    
+    public void preparaAlterar(){
+         btnSalvar.setEnabled(false);
+        btnExcluir.setEnabled(true);
+        btnCancelar.setEnabled(true);
+        btnAlterar.setEnabled(true);
+        txtNome.setEnabled(true);
+        txtDescricao.setEnabled(true);
+        btnNovo.setEnabled(false);
+    }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelFornecedor;
     private javax.swing.JButton btnAlterar;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnCategoria;
     private javax.swing.JButton btnCategoria1;
     private javax.swing.JButton btnExcluir;
