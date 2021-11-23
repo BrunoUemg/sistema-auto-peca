@@ -92,6 +92,7 @@ public class FornecedorView extends javax.swing.JInternalFrame {
         btnAlterar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbFornecedor = new javax.swing.JTable();
@@ -127,9 +128,19 @@ public class FornecedorView extends javax.swing.JInternalFrame {
 
         txtCodigo.setEditable(false);
 
+        txtRzSocial.setEnabled(false);
+
+        txtNome.setEnabled(false);
+
         btnNovo.setText("Novo");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
 
         btnAlterar.setText("Alterar");
+        btnAlterar.setEnabled(false);
         btnAlterar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAlterarActionPerformed(evt);
@@ -137,6 +148,7 @@ public class FornecedorView extends javax.swing.JInternalFrame {
         });
 
         btnExcluir.setText("Excluir");
+        btnExcluir.setEnabled(false);
         btnExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExcluirActionPerformed(evt);
@@ -144,9 +156,18 @@ public class FornecedorView extends javax.swing.JInternalFrame {
         });
 
         btnSalvar.setText("Salvar");
+        btnSalvar.setEnabled(false);
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalvarActionPerformed(evt);
+            }
+        });
+
+        btnCancelar.setText("Cancelar");
+        btnCancelar.setEnabled(false);
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
             }
         });
 
@@ -217,7 +238,9 @@ public class FornecedorView extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnExcluir)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSalvar)))
+                        .addComponent(btnSalvar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(612, Short.MAX_VALUE))
         );
         PanelFornecedorLayout.setVerticalGroup(
@@ -272,12 +295,13 @@ public class FornecedorView extends javax.swing.JInternalFrame {
                     .addComponent(txtCEP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13)
                     .addComponent(txtCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addGroup(PanelFornecedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNovo)
                     .addComponent(btnAlterar)
                     .addComponent(btnExcluir)
-                    .addComponent(btnSalvar)))
+                    .addComponent(btnSalvar)
+                    .addComponent(btnCancelar)))
         );
 
         tbFornecedor.setModel(new javax.swing.table.DefaultTableModel(
@@ -354,6 +378,12 @@ public class FornecedorView extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        if(txtRzSocial.getText().isEmpty() || txtNome.getText().isEmpty() || txtInscEstadual.getText().isEmpty()
+                || txtCNPJ.getText().isEmpty() || txtEndereco.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos");
+            txtRzSocial.requestFocus();
+        }else{
+        
         fornecedor = new Fornecedor();
         fornecedor.setRazaoSocial(txtRzSocial.getText());
         fornecedor.setNomeFantasia(txtNome.getText());
@@ -372,6 +402,8 @@ public class FornecedorView extends javax.swing.JInternalFrame {
             readFornecedorTable();
         } catch (SQLException ex) {
             Logger.getLogger(FornecedorView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        desabilita();
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
@@ -395,6 +427,7 @@ public class FornecedorView extends javax.swing.JInternalFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(FornecedorView.class.getName()).log(Level.SEVERE, null, ex);
             }
+            preparaAlterar();
         }
     }//GEN-LAST:event_tbFornecedorMouseClicked
 
@@ -425,6 +458,7 @@ public class FornecedorView extends javax.swing.JInternalFrame {
                 Logger.getLogger(FornecedorView.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        desabilita();
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
@@ -442,15 +476,81 @@ public class FornecedorView extends javax.swing.JInternalFrame {
                 } catch (SQLException ex) {
                     Logger.getLogger(ClienteView.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
+                desabilita();
             }
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+       preparaNovo();
+    }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+       desabilita();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    public void preparaNovo(){
+        txtBairro.setText("");
+        txtCEP.setText("");
+        txtCNPJ.setText("");
+        txtCelular.setText("");
+        txtCidade.setText("");
+        txtCodigo.setText("");
+        txtEmail.setText("");
+        txtEndereco.setText("");
+        txtInscEstadual.setText("");
+        txtNome.setText("");
+        txtNum.setText("");
+        txtRzSocial.setText("");
+        txtTelefone.setText("");
+        btnSalvar.setEnabled(true);
+        btnCancelar.setEnabled(true);
+        btnNovo.setEnabled(false);
+        txtNome.setEnabled(true);
+        txtRzSocial.setEnabled(true);
+        
+    }
+    
+    
+    public void desabilita(){
+        btnSalvar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnCancelar.setEnabled(false);
+        btnNovo.setEnabled(true);
+        txtRzSocial.setEnabled(false);
+        txtNome.setEnabled(false);
+        txtBairro.setText("");
+        txtCEP.setText("");
+        txtCNPJ.setText("");
+        txtCelular.setText("");
+        txtCidade.setText("");
+        txtCodigo.setText("");
+        txtEmail.setText("");
+        txtEndereco.setText("");
+        txtInscEstadual.setText("");
+        txtNome.setText("");
+        txtNum.setText("");
+        txtRzSocial.setText("");
+        txtTelefone.setText("");
+    }
+    
+    public void preparaAlterar(){
+        btnAlterar.setEnabled(true);
+        btnExcluir.setEnabled(true);
+        btnCancelar.setEnabled(true);
+        btnNovo.setEnabled(false);
+        txtNome.setEnabled(true);
+        txtRzSocial.setEnabled(true);
+        btnSalvar.setEnabled(false);
+        
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelFornecedor;
     private javax.swing.JButton btnAlterar;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnSalvar;

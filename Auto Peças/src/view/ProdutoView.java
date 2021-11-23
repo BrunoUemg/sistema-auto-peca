@@ -506,7 +506,13 @@ public class ProdutoView extends javax.swing.JInternalFrame {
             int confirma = JOptionPane.showConfirmDialog(null, "Deseja excluir:" + txtNome.getText());
             if (confirma == 0) {
                
-                JOptionPane.showMessageDialog(null, "Excluido com sucesso");
+                
+                try {
+                    JOptionPane.showMessageDialog(null, produtoDAO.excluirProduto(produto));
+                    readJTableProduto();
+                } catch (SQLException ex) {
+                    Logger.getLogger(ClienteView.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 desabilita();
             }
     }//GEN-LAST:event_btnExcluirActionPerformed

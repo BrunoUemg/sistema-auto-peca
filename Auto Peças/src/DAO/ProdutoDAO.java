@@ -108,5 +108,16 @@ public class ProdutoDAO {
         }
         return "Erro ao alterar!";
     }
+    public String excluirProduto(Produto produto) throws SQLException {
+        sql = "delete from produto where idProduto=?";
+        pst = Conexao.getInstance().prepareStatement(sql);
+        pst.setInt(1, produto.getIdProduto());
+        int rows = pst.executeUpdate();
+        pst.close();
+        if (rows == 1) {
+            return "Excluido com sucesso!";
+        }
+        return "Erro ao excluir!";
+    }
 
 }
