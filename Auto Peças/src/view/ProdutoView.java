@@ -454,8 +454,8 @@ public class ProdutoView extends javax.swing.JInternalFrame {
                 txtDescricao.setText(produto.getDescricao());
                 txtQtdMin.setText(String.valueOf(produto.getQuantidadeMin()));
                 txtCodigoBarras.setText(produto.getCodigoBarras());
-                cbCategoria.setSelectedItem(categoria);
-                cbMarca.setSelectedItem(marca);
+                cbCategoria.getModel().setSelectedItem(categoria);
+                cbMarca.getModel().setSelectedItem(marca);
                 preparaAlterar();
             } catch (SQLException ex) {
                 Logger.getLogger(FornecedorView.class.getName()).log(Level.SEVERE, null, ex);
