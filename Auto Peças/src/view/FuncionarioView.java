@@ -5,12 +5,21 @@
  */
 package view;
 
+import DAO.FuncionarioDAO;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import model.Funcionario;
+
 /**
  *
  * @author serpa
  */
 public class FuncionarioView extends javax.swing.JInternalFrame {
-
+    
+    Funcionario funcionario;
+    FuncionarioDAO funcionarioDAO;
     /**
      * Creates new form Fornecedor
      */
@@ -30,7 +39,6 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
 
         PanelFornecedor = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -43,38 +51,36 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
-        txtRzSocial = new javax.swing.JTextField();
         txtNome = new javax.swing.JTextField();
-        txtInscEstadual = new javax.swing.JFormattedTextField();
-        txtCNPJ = new javax.swing.JFormattedTextField();
+        txtCpf = new javax.swing.JFormattedTextField();
         txtTelefone = new javax.swing.JTextField();
         txtCelular = new javax.swing.JTextField();
         txtEmail = new javax.swing.JTextField();
         txtEndereco = new javax.swing.JTextField();
         txtNum = new javax.swing.JTextField();
         txtBairro = new javax.swing.JTextField();
-        txtCEP = new javax.swing.JFormattedTextField();
-        txtCidade = new javax.swing.JTextField();
+        txtUsuario = new javax.swing.JFormattedTextField();
         btnNovo = new javax.swing.JButton();
         btnAlterar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
+        txtSenha = new javax.swing.JPasswordField();
+        cbbCargo = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         tbFornecedor = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbFuncionario = new javax.swing.JTable();
 
         setClosable(true);
         setTitle("Funcionarios");
 
         jLabel1.setText("Código");
 
-        jLabel2.setText("Nome");
-
         jLabel3.setText("Nome");
 
-        jLabel4.setText("Inscrição Estadual");
+        jLabel4.setText("Cargo");
 
-        jLabel5.setText("CNPJ");
+        jLabel5.setText("CPF");
 
         jLabel6.setText("Telefone");
 
@@ -88,9 +94,9 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
 
         jLabel11.setText("Número");
 
-        jLabel12.setText("CEP");
+        jLabel12.setText("Usuário");
 
-        jLabel13.setText("Cidade");
+        jLabel13.setText("Senha");
 
         btnNovo.setText("Novo");
 
@@ -99,6 +105,15 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
         btnExcluir.setText("Excluir");
 
         btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
+
+        cbbCargo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jButton1.setText("Cancelar");
 
         javax.swing.GroupLayout PanelFornecedorLayout = new javax.swing.GroupLayout(PanelFornecedor);
         PanelFornecedor.setLayout(PanelFornecedorLayout);
@@ -109,15 +124,16 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
                 .addGroup(PanelFornecedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PanelFornecedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(PanelFornecedorLayout.createSequentialGroup()
-                            .addGroup(PanelFornecedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PanelFornecedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addGroup(PanelFornecedorLayout.createSequentialGroup()
                                     .addComponent(jLabel1)
-                                    .addGap(58, 58, 58)
+                                    .addGap(25, 25, 25)
                                     .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(PanelFornecedorLayout.createSequentialGroup()
                                     .addComponent(jLabel4)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtInscEstadual, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(29, 29, 29)
+                                    .addComponent(cbbCargo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGap(95, 95, 95))
                                 .addGroup(PanelFornecedorLayout.createSequentialGroup()
                                     .addGroup(PanelFornecedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel6)
@@ -143,23 +159,19 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
                         .addGroup(PanelFornecedorLayout.createSequentialGroup()
                             .addComponent(jLabel12)
                             .addGap(72, 72, 72)
-                            .addComponent(txtCEP, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jLabel13)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(txtCidade))
+                            .addComponent(txtSenha))
+                        .addGroup(PanelFornecedorLayout.createSequentialGroup()
+                            .addComponent(jLabel3)
+                            .addGap(31, 31, 31)
+                            .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(PanelFornecedorLayout.createSequentialGroup()
                             .addComponent(jLabel5)
-                            .addGap(66, 66, 66)
-                            .addComponent(txtCNPJ))
-                        .addGroup(PanelFornecedorLayout.createSequentialGroup()
-                            .addGroup(PanelFornecedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel3)
-                                .addComponent(jLabel2))
-                            .addGap(31, 31, 31)
-                            .addGroup(PanelFornecedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtRzSocial, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGap(39, 39, 39)
+                            .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(PanelFornecedorLayout.createSequentialGroup()
                         .addComponent(btnNovo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -167,7 +179,9 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnExcluir)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSalvar)))
+                        .addComponent(btnSalvar)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1)))
                 .addContainerGap(612, Short.MAX_VALUE))
         );
         PanelFornecedorLayout.setVerticalGroup(
@@ -177,22 +191,18 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
                 .addGroup(PanelFornecedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(PanelFornecedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtRzSocial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(31, 31, 31)
                 .addGroup(PanelFornecedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelFornecedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(txtInscEstadual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbbCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelFornecedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(txtCNPJ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelFornecedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -219,18 +229,19 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelFornecedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(txtCEP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13)
-                    .addComponent(txtCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                    .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addGroup(PanelFornecedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNovo)
                     .addComponent(btnAlterar)
                     .addComponent(btnExcluir)
-                    .addComponent(btnSalvar)))
+                    .addComponent(btnSalvar)
+                    .addComponent(jButton1)))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbFuncionario.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -241,7 +252,7 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tbFornecedor.setViewportView(jTable1);
+        tbFornecedor.setViewportView(tbFuncionario);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -282,6 +293,29 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+       funcionario = new Funcionario();
+       Funcionario cargo = (Funcionario) cbbCargo.getSelectedItem();
+       funcionario.setNome(txtNome.getText());
+       funcionario.setCpf(txtCpf.getText());
+       funcionario.setTelefone(txtTelefone.getText());
+       funcionario.setCelular(txtCelular.getText());
+       funcionario.setEmail(txtEmail.getText());
+       funcionario.setEndereco(txtEndereco.getText());
+       funcionario.setBairro(txtBairro.getText());
+       funcionario.setNumero(txtNum.getText());
+       funcionario.setCargo(cargo.getCargo());
+       funcionario.setUsuario(txtUsuario.getText());
+       funcionario.setUsuario(txtSenha.getText());
+       
+       try {
+            JOptionPane.showMessageDialog(null, funcionarioDAO.salvarFuncionario(funcionario));
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(FornecedorView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelFornecedor;
@@ -289,12 +323,13 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JComboBox<String> cbbCargo;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -303,20 +338,18 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JScrollPane tbFornecedor;
+    private javax.swing.JTable tbFuncionario;
     private javax.swing.JTextField txtBairro;
-    private javax.swing.JFormattedTextField txtCEP;
-    private javax.swing.JFormattedTextField txtCNPJ;
     private javax.swing.JTextField txtCelular;
-    private javax.swing.JTextField txtCidade;
     private javax.swing.JTextField txtCodigo;
+    private javax.swing.JFormattedTextField txtCpf;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtEndereco;
-    private javax.swing.JFormattedTextField txtInscEstadual;
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtNum;
-    private javax.swing.JTextField txtRzSocial;
+    private javax.swing.JPasswordField txtSenha;
     private javax.swing.JTextField txtTelefone;
+    private javax.swing.JFormattedTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

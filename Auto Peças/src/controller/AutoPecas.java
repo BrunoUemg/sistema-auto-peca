@@ -18,6 +18,7 @@ public class AutoPecas {
      */
     public static void main(String[] args) {
         Principal principal = new Principal();
+        //LoginView login = new LoginView();
     }
 
 }
