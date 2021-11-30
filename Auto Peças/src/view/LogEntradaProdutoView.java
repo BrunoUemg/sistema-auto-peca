@@ -36,7 +36,7 @@ public class LogEntradaProdutoView extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Consultar PRoduto");
+        setTitle("Consultar Produto");
 
         tbProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
