@@ -132,9 +132,17 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
 
         txtCodigo.setEditable(false);
 
+        txtNome.setEnabled(false);
+
         btnNovo.setText("Novo");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
 
         btnAlterar.setText("Alterar");
+        btnAlterar.setEnabled(false);
         btnAlterar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAlterarActionPerformed(evt);
@@ -142,6 +150,7 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
         });
 
         btnExcluir.setText("Excluir");
+        btnExcluir.setEnabled(false);
         btnExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExcluirActionPerformed(evt);
@@ -149,6 +158,7 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
         });
 
         btnSalvar.setText("Salvar");
+        btnSalvar.setEnabled(false);
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalvarActionPerformed(evt);
@@ -156,8 +166,15 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
         });
 
         cbbCargo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Financeiro", "Vendedor" }));
+        cbbCargo.setEnabled(false);
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.setEnabled(false);
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout PanelFornecedorLayout = new javax.swing.GroupLayout(PanelFornecedor);
         PanelFornecedor.setLayout(PanelFornecedorLayout);
@@ -352,6 +369,10 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         funcionario = new Funcionario();
 //       Funcionario cargo = (Funcionario) cbbCargo.getSelectedItem();
+        if(txtNome.getText().isEmpty() || txtCpf.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Preencha todos os campos");
+            txtNome.requestFocus();
+        }else{
         funcionario.setCargo((String) cbbCargo.getSelectedItem());
         funcionario.setNome(txtNome.getText());
         funcionario.setCpf(txtCpf.getText());
@@ -371,6 +392,8 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(FornecedorView.class.getName()).log(Level.SEVERE, null, ex);
         }
+        desabilita();
+        }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void tbFuncionarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbFuncionarioMouseClicked
@@ -389,9 +412,11 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
                 txtBairro.setText(funcionario.getBairro());
                 txtUsuario.setText(funcionario.getUsuario());
                 txtSenha.setText(null);
+                preparaAlterar();
             } catch (SQLException ex) {
                 Logger.getLogger(FornecedorView.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
         }
     }//GEN-LAST:event_tbFuncionarioMouseClicked
 
@@ -420,6 +445,7 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(FornecedorView.class.getName()).log(Level.SEVERE, null, ex);
             }
+            desabilita();
         }
     }//GEN-LAST:event_btnAlterarActionPerformed
 
@@ -438,11 +464,69 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
                 } catch (SQLException ex) {
                     Logger.getLogger(ClienteView.class.getName()).log(Level.SEVERE, null, ex);
                 }
-//                desabilita();
+                desabilita();
             }
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+       preparaNovo();
+    }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        desabilita();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    public void preparaNovo(){
+        txtNome.setText("");
+        txtBairro.setText("");
+        txtCelular.setText("");
+        txtCodigo.setText("");
+        txtCpf.setText("");
+        txtEmail.setText("");
+        txtNum.setText("");
+        txtSenha.setText("");
+        txtTelefone.setText("");
+        txtUsuario.setText("");
+        txtEndereco.setText("");
+        btnSalvar.setEnabled(true);
+        btnCancelar.setEnabled(true);
+        txtNome.setEnabled(true);
+        cbbCargo.setEnabled(true);
+        btnNovo.setEnabled(false);
+        
+    }
+    
+    public void desabilita(){
+        txtNome.setText("");
+        txtBairro.setText("");
+        txtCelular.setText("");
+        txtCodigo.setText("");
+        txtCpf.setText("");
+        txtEmail.setText("");
+        txtNum.setText("");
+        txtSenha.setText("");
+        txtTelefone.setText("");
+        txtUsuario.setText("");
+        txtEndereco.setText("");
+        btnSalvar.setEnabled(false);
+        btnCancelar.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        txtNome.setEnabled(false);
+        cbbCargo.setEnabled(false);
+        btnNovo.setEnabled(true);
+    }
+    
+    public void preparaAlterar(){
+        txtNome.setEnabled(true);
+        cbbCargo.setEnabled(true);
+        btnAlterar.setEnabled(true);
+        btnExcluir.setEnabled(true);
+        btnCancelar.setEnabled(true);
+        btnSalvar.setEnabled(false);
+        btnNovo.setEnabled(false);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelFornecedor;
