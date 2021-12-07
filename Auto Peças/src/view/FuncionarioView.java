@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import model.Funcionario;
 
 /**
@@ -17,15 +18,37 @@ import model.Funcionario;
  * @author serpa
  */
 public class FuncionarioView extends javax.swing.JInternalFrame {
-    
+
     Funcionario funcionario;
     FuncionarioDAO funcionarioDAO;
+
     /**
      * Creates new form Fornecedor
      */
     public FuncionarioView() {
+        funcionarioDAO = new FuncionarioDAO();
         initComponents();
         this.setVisible(true);
+        try {
+            readFuncionarioTable();
+        } catch (SQLException ex) {
+            Logger.getLogger(FuncionarioView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void readFuncionarioTable() throws SQLException {
+        DefaultTableModel modelFunc = (DefaultTableModel) tbFuncionario.getModel();
+        modelFunc.setNumRows(0);
+        for (Funcionario func : funcionarioDAO.readFuncionarios()) {
+            modelFunc.addRow(new Object[]{
+                func.getIdFuncionario(),
+                func.getNome(),
+                func.getCargo(),
+                func.getCelular(),
+                func.getEmail()
+            });
+
+        }
     }
 
     /**
@@ -98,11 +121,23 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
 
         jLabel13.setText("Senha");
 
+        txtCodigo.setEditable(false);
+
         btnNovo.setText("Novo");
 
         btnAlterar.setText("Alterar");
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnSalvar.setText("Salvar");
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
@@ -111,7 +146,7 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
             }
         });
 
-        cbbCargo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbbCargo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Financeiro", "Vendedor" }));
 
         jButton1.setText("Cancelar");
 
@@ -150,7 +185,6 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
                                     .addComponent(txtEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(jLabel11)))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(txtNum, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(PanelFornecedorLayout.createSequentialGroup()
                             .addComponent(jLabel10)
@@ -182,7 +216,7 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
                         .addComponent(btnSalvar)
                         .addGap(18, 18, 18)
                         .addComponent(jButton1)))
-                .addContainerGap(612, Short.MAX_VALUE))
+                .addContainerGap(616, Short.MAX_VALUE))
         );
         PanelFornecedorLayout.setVerticalGroup(
             PanelFornecedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -243,15 +277,28 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
 
         tbFuncionario.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Código", "Nome", "Cargo", "Celular", "E-mail"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbFuncionario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbFuncionarioMouseClicked(evt);
+            }
+        });
         tbFornecedor.setViewportView(tbFuncionario);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -294,27 +341,98 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-       funcionario = new Funcionario();
-       Funcionario cargo = (Funcionario) cbbCargo.getSelectedItem();
-       funcionario.setNome(txtNome.getText());
-       funcionario.setCpf(txtCpf.getText());
-       funcionario.setTelefone(txtTelefone.getText());
-       funcionario.setCelular(txtCelular.getText());
-       funcionario.setEmail(txtEmail.getText());
-       funcionario.setEndereco(txtEndereco.getText());
-       funcionario.setBairro(txtBairro.getText());
-       funcionario.setNumero(txtNum.getText());
-       funcionario.setCargo(cargo.getCargo());
-       funcionario.setUsuario(txtUsuario.getText());
-       funcionario.setUsuario(txtSenha.getText());
-       
-       try {
+        funcionario = new Funcionario();
+//       Funcionario cargo = (Funcionario) cbbCargo.getSelectedItem();
+        funcionario.setCargo((String) cbbCargo.getSelectedItem());
+        funcionario.setNome(txtNome.getText());
+        funcionario.setCpf(txtCpf.getText());
+        funcionario.setTelefone(txtTelefone.getText());
+        funcionario.setCelular(txtCelular.getText());
+        funcionario.setEmail(txtEmail.getText());
+        funcionario.setEndereco(txtEndereco.getText());
+        funcionario.setBairro(txtBairro.getText());
+        funcionario.setNumero(txtNum.getText());
+        funcionario.setUsuario(txtUsuario.getText());
+        funcionario.setSenha(txtSenha.getText());
+
+        try {
             JOptionPane.showMessageDialog(null, funcionarioDAO.salvarFuncionario(funcionario));
-            
+            readFuncionarioTable();
+
         } catch (SQLException ex) {
             Logger.getLogger(FornecedorView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void tbFuncionarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbFuncionarioMouseClicked
+        if (tbFuncionario.getSelectedRow() != -1) {
+            try {
+                funcionario = funcionarioDAO.BuscarFuncionario(tbFuncionario.getValueAt(tbFuncionario.getSelectedRow(), 0).toString());
+                txtCodigo.setText(String.valueOf(funcionario.getIdFuncionario()));
+                txtNome.setText(funcionario.getNome());
+                cbbCargo.setSelectedItem(funcionario.getCargo());
+                txtCpf.setText(funcionario.getCpf());
+                txtTelefone.setText(funcionario.getTelefone());
+                txtCelular.setText(funcionario.getCelular());
+                txtEmail.setText(funcionario.getEmail());
+                txtEndereco.setText(funcionario.getEndereco());
+                txtNum.setText(funcionario.getNumero());
+                txtBairro.setText(funcionario.getBairro());
+                txtUsuario.setText(funcionario.getUsuario());
+                txtSenha.setText(null);
+            } catch (SQLException ex) {
+                Logger.getLogger(FornecedorView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_tbFuncionarioMouseClicked
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        if (txtNome.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Selecione um funcionario na tabela");
+            txtNome.requestFocus();
+        } else {
+
+            funcionario = new Funcionario();
+            funcionario.setCargo((String) cbbCargo.getSelectedItem());
+            funcionario.setNome(txtNome.getText());
+            funcionario.setCpf(txtCpf.getText());
+            funcionario.setTelefone(txtTelefone.getText());
+            funcionario.setCelular(txtCelular.getText());
+            funcionario.setEmail(txtEmail.getText());
+            funcionario.setEndereco(txtEndereco.getText());
+            funcionario.setBairro(txtBairro.getText());
+            funcionario.setNumero(txtNum.getText());
+            funcionario.setUsuario(txtUsuario.getText());
+            funcionario.setSenha(txtSenha.getText());
+            funcionario.setIdFuncionario(Integer.parseInt(txtCodigo.getText()));
+            try {
+                JOptionPane.showMessageDialog(null, funcionarioDAO.alterarFuncionario(funcionario));
+                readFuncionarioTable();
+            } catch (SQLException ex) {
+                Logger.getLogger(FornecedorView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        funcionario = new Funcionario();
+        if (txtNome.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Selecione um funcionario");
+
+        } else {
+            funcionario.setIdFuncionario((int) tbFuncionario.getValueAt(tbFuncionario.getSelectedRow(), 0));
+            int confirma = JOptionPane.showConfirmDialog(null, "Deseja excluir:" + txtNome.getText());
+            if (confirma == 0) {
+                try {
+                    JOptionPane.showMessageDialog(null, funcionarioDAO.excluirFuncionario(funcionario));
+                    readFuncionarioTable();
+                } catch (SQLException ex) {
+                    Logger.getLogger(ClienteView.class.getName()).log(Level.SEVERE, null, ex);
+                }
+//                desabilita();
+            }
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

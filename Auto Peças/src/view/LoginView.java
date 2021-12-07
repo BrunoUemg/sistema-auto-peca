@@ -5,6 +5,13 @@
  */
 package view;
 
+import DAO.Session;
+import DAO.UsuarioDAO;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import model.Funcionario;
+
 /**
  *
  * @author Bruno
@@ -45,6 +52,11 @@ public class LoginView extends javax.swing.JFrame {
         jLabel2.setText("Senha");
 
         jButton1.setText("Login");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Cancelar");
 
@@ -85,10 +97,41 @@ public class LoginView extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            String usuario, senha;
+
+            usuario = txtUsuario.getText();
+            senha = txtSenha.getText();
+
+            Funcionario objFunc = new Funcionario();
+            objFunc.setUsuario(usuario);
+            objFunc.setSenha(senha);
+
+            UsuarioDAO objUsuarioDAO = new UsuarioDAO();
+            ResultSet rsUsuarioDAO = objUsuarioDAO.autenticarUsuario(objFunc);
+            if (rsUsuarioDAO.next()) {
+                Session session = Session.getInstance();
+                session.setIdFuncionario(rsUsuarioDAO.getInt("idFuncionario"));
+                session.setCargo(rsUsuarioDAO.getString("cargo"));
+                session.setNome(rsUsuarioDAO.getString("nome"));
+                Principal principal = new Principal();
+
+                principal.setVisible(true);
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Usuário ou senha inválida.");
+            }
+
+        } catch (SQLException erro) {
+            JOptionPane.showMessageDialog(null, "LoginView" + erro);
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
-   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

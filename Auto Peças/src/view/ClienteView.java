@@ -6,6 +6,7 @@
 package view;
 
 import DAO.ClienteDAO;
+import DAO.Session;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -36,6 +37,15 @@ public class ClienteView extends javax.swing.JInternalFrame {
         clienteDAO = new ClienteDAO();
         initComponents();
         this.setVisible(true);
+        Session session = Session.getInstance();
+        if ("Vendedor".equals(session.getCargo())) {
+            btnCadastrarF.setVisible(false);
+            btnCadastrarJ.setVisible(false);
+            btnExcluirF.setVisible(false);
+            excluirJ.setVisible(false);
+            btnNovo.setVisible(false);
+            btnNovoF.setVisible(false);
+        }
         try {
             readJTableF();
             readJTableJ();

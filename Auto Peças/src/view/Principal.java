@@ -5,6 +5,7 @@
  */
 package view;
 
+import DAO.Session;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,8 +22,14 @@ public class Principal extends javax.swing.JFrame {
      */
     public Principal() {
         initComponents();
-        this.setVisible(true);
+        this.setVisible(false);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        
+        Session session = Session.getInstance();
+        if ("Vendedor".equals(session.getCargo())) {
+            btnFornecedores.setVisible(false);
+            btnFuncionario.setVisible(false);
+        }
     }
 
     /**
@@ -39,9 +46,9 @@ public class Principal extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         btnClientes = new javax.swing.JMenuItem();
         btnFornecedores = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        btnProdutos = new javax.swing.JMenuItem();
+        btnFuncionario = new javax.swing.JMenuItem();
+        btnEntrada = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
 
@@ -80,29 +87,29 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu1.add(btnFornecedores);
 
-        jMenuItem1.setText("Produtos");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        btnProdutos.setText("Produtos");
+        btnProdutos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                btnProdutosActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(btnProdutos);
 
-        jMenuItem3.setText("Funcionario");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        btnFuncionario.setText("Funcionario");
+        btnFuncionario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                btnFuncionarioActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem3);
+        jMenu1.add(btnFuncionario);
 
-        jMenuItem4.setText("Entrada");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        btnEntrada.setText("Entrada");
+        btnEntrada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                btnEntradaActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem4);
+        jMenu1.add(btnEntrada);
 
         jMenuBar1.add(jMenu1);
 
@@ -143,7 +150,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnClientesActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-         this.dispose();
+        this.dispose();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void btnFornecedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFornecedoresActionPerformed
@@ -154,7 +161,7 @@ public class Principal extends javax.swing.JFrame {
         pnlPrincipal.updateUI();
     }//GEN-LAST:event_btnFornecedoresActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void btnProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutosActionPerformed
         try {
             ProdutoView produto;
             produto = new ProdutoView();
@@ -164,71 +171,39 @@ public class Principal extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_btnProdutosActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void btnFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFuncionarioActionPerformed
         FuncionarioView funcionario;
         funcionario = new FuncionarioView();
         pnlPrincipal.removeAll();
         pnlPrincipal.add(funcionario);
         pnlPrincipal.updateUI();
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_btnFuncionarioActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-       EntradaView entrada;
+    private void btnEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntradaActionPerformed
+        EntradaView entrada;
         entrada = new EntradaView();
         pnlPrincipal.removeAll();
         pnlPrincipal.add(entrada);
         pnlPrincipal.updateUI();
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    }//GEN-LAST:event_btnEntradaActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Principal().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnClientes;
+    private javax.swing.JMenuItem btnEntrada;
     private javax.swing.JMenuItem btnFornecedores;
+    private javax.swing.JMenuItem btnFuncionario;
+    private javax.swing.JMenuItem btnProdutos;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel pnlPrincipal;
     // End of variables declaration//GEN-END:variables
 
-  
 }

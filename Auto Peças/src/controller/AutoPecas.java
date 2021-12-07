@@ -5,6 +5,7 @@
  */
 package controller;
 
+import view.LoginView;
 import view.Principal;
 
 /**
@@ -17,8 +18,8 @@ public class AutoPecas {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Principal principal = new Principal();
-        //LoginView login = new LoginView();
+//        Principal principal = new Principal();
+        LoginView login = new LoginView();
     }
 
 }
