@@ -6,6 +6,7 @@
 package view;
 
 import DAO.FuncionarioDAO;
+import DAO.Session;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +30,14 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
         funcionarioDAO = new FuncionarioDAO();
         initComponents();
         this.setVisible(true);
+        Session session = Session.getInstance();
+        if ("Financeiro".equals(session.getCargo())) {
+            btnNovo.setVisible(false);
+            btnSalvar.setVisible(false);
+            btnExcluir.setVisible(false);
+            btnAlterar.setVisible(false);
+            btnCancelar.setVisible(false);
+        }
         try {
             readFuncionarioTable();
         } catch (SQLException ex) {
@@ -89,7 +98,7 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
         btnSalvar = new javax.swing.JButton();
         txtSenha = new javax.swing.JPasswordField();
         cbbCargo = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         tbFornecedor = new javax.swing.JScrollPane();
         tbFuncionario = new javax.swing.JTable();
@@ -148,7 +157,7 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
 
         cbbCargo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Financeiro", "Vendedor" }));
 
-        jButton1.setText("Cancelar");
+        btnCancelar.setText("Cancelar");
 
         javax.swing.GroupLayout PanelFornecedorLayout = new javax.swing.GroupLayout(PanelFornecedor);
         PanelFornecedor.setLayout(PanelFornecedorLayout);
@@ -215,7 +224,7 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSalvar)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1)))
+                        .addComponent(btnCancelar)))
                 .addContainerGap(616, Short.MAX_VALUE))
         );
         PanelFornecedorLayout.setVerticalGroup(
@@ -272,7 +281,7 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
                     .addComponent(btnAlterar)
                     .addComponent(btnExcluir)
                     .addComponent(btnSalvar)
-                    .addComponent(jButton1)))
+                    .addComponent(btnCancelar)))
         );
 
         tbFuncionario.setModel(new javax.swing.table.DefaultTableModel(
@@ -438,11 +447,11 @@ public class FuncionarioView extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelFornecedor;
     private javax.swing.JButton btnAlterar;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JComboBox<String> cbbCargo;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
