@@ -26,7 +26,7 @@ public class Principal extends javax.swing.JFrame {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         
         Session session = Session.getInstance();
-        labelNome.setText("Bem vindo(a) "+session.getNome());
+        labelNome.setText("Bem-vindo(a) "+session.getNome());
         if ("Vendedor".equals(session.getCargo())) {
             btnFornecedores.setVisible(false);
             btnFuncionario.setVisible(false);
@@ -70,9 +70,9 @@ public class Principal extends javax.swing.JFrame {
         );
         pnlPrincipalLayout.setVerticalGroup(
             pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlPrincipalLayout.createSequentialGroup()
-                .addComponent(labelNome, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 383, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlPrincipalLayout.createSequentialGroup()
+                .addGap(0, 383, Short.MAX_VALUE)
+                .addComponent(labelNome, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jMenuBar1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
