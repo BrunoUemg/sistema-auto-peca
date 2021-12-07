@@ -126,6 +126,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
         btnAlterar = new javax.swing.JButton();
         btnExcluirF = new javax.swing.JButton();
         btnNovoF = new javax.swing.JButton();
+        btnCancelarF = new javax.swing.JButton();
         PanelJuridica = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         txtCidadeJ = new javax.swing.JTextField();
@@ -158,6 +159,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
         btnAlterarJ = new javax.swing.JButton();
         excluirJ = new javax.swing.JButton();
         btnNovo = new javax.swing.JButton();
+        btnCancelarJ = new javax.swing.JButton();
 
         setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         setClosable(true);
@@ -173,6 +175,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
         jLabel6.setText("Número:");
 
         btnCadastrarF.setText("Cadastrar");
+        btnCadastrarF.setEnabled(false);
         btnCadastrarF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCadastrarFActionPerformed(evt);
@@ -227,6 +230,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(tbFisica);
 
         btnAlterar.setText("Alterar");
+        btnAlterar.setEnabled(false);
         btnAlterar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAlterarActionPerformed(evt);
@@ -234,6 +238,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
         });
 
         btnExcluirF.setText("Excluir");
+        btnExcluirF.setEnabled(false);
         btnExcluirF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExcluirFActionPerformed(evt);
@@ -244,6 +249,14 @@ public class ClienteView extends javax.swing.JInternalFrame {
         btnNovoF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNovoFActionPerformed(evt);
+            }
+        });
+
+        btnCancelarF.setText("Cancelar");
+        btnCancelarF.setEnabled(false);
+        btnCancelarF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarFActionPerformed(evt);
             }
         });
 
@@ -287,7 +300,9 @@ public class ClienteView extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnExcluirF, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnExcluirF, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnCancelarF))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7)
@@ -312,7 +327,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
                                     .addComponent(txtRG, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtCelularF, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(txtEmailF, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(408, Short.MAX_VALUE))
+                .addContainerGap(323, Short.MAX_VALUE))
             .addComponent(jScrollPane1)
         );
         jPanel1Layout.setVerticalGroup(
@@ -365,7 +380,8 @@ public class ClienteView extends javax.swing.JInternalFrame {
                     .addComponent(btnCadastrarF)
                     .addComponent(btnAlterar)
                     .addComponent(btnExcluirF)
-                    .addComponent(btnNovoF))
+                    .addComponent(btnNovoF)
+                    .addComponent(btnCancelarF))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -400,6 +416,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
         jLabel12.setText("Nome:");
 
         btnCadastrarJ.setText("Cadastrar");
+        btnCadastrarJ.setEnabled(false);
         btnCadastrarJ.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCadastrarJActionPerformed(evt);
@@ -450,6 +467,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
         }
 
         btnAlterarJ.setText("alterar");
+        btnAlterarJ.setEnabled(false);
         btnAlterarJ.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAlterarJActionPerformed(evt);
@@ -457,6 +475,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
         });
 
         excluirJ.setText("Excluir");
+        excluirJ.setEnabled(false);
         excluirJ.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 excluirJActionPerformed(evt);
@@ -467,6 +486,14 @@ public class ClienteView extends javax.swing.JInternalFrame {
         btnNovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNovoActionPerformed(evt);
+            }
+        });
+
+        btnCancelarJ.setText("Cancelar");
+        btnCancelarJ.setEnabled(false);
+        btnCancelarJ.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarJActionPerformed(evt);
             }
         });
 
@@ -510,7 +537,9 @@ public class ClienteView extends javax.swing.JInternalFrame {
                                     .addComponent(txtNumeroJ, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnAlterarJ, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(excluirJ, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(excluirJ, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnCancelarJ))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel18)
@@ -533,7 +562,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel19)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtCelularJ, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(465, Short.MAX_VALUE))
+                .addContainerGap(380, Short.MAX_VALUE))
             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1023, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
@@ -586,7 +615,8 @@ public class ClienteView extends javax.swing.JInternalFrame {
                     .addComponent(btnCadastrarJ)
                     .addComponent(btnAlterarJ)
                     .addComponent(excluirJ)
-                    .addComponent(btnNovo))
+                    .addComponent(btnNovo)
+                    .addComponent(btnCancelarJ))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25))
@@ -661,6 +691,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
         }
         JOptionPane.showMessageDialog(null, "Gravado com Sucesso");
         limpaCamposF();
+        desabilitaF();
           }
     }//GEN-LAST:event_btnCadastrarFActionPerformed
 
@@ -705,6 +736,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
         }
         JOptionPane.showMessageDialog(null, "Gravado com Sucesso");
         limpaCamposJ();
+        desabilitaJ();
              }
     }//GEN-LAST:event_btnCadastrarJActionPerformed
 
@@ -719,6 +751,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
                     String strDate = dateFormat.format(clienteFisico.getDtaNascimento());
                     txtDtaNascimento.setText(strDate);
                 }
+                alterarF();
                 txtNomeF.setText(clienteFisico.getNome());
                 txtTelefoneF.setText(clienteFisico.getTelefone());
                 txtCelularF.setText(clienteFisico.getCelular());
@@ -747,6 +780,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
                     String strDate = dateFormat.format(clienteJuridico.getFundacao());
                     txtFundacao.setText(strDate);
                 }
+                alterarJ();
                 txtNomeJ.setText(clienteJuridico.getNome());
                 txtTelefoneJ.setText(clienteJuridico.getTelefone());
                 txtCelularJ.setText(clienteJuridico.getCelular());
@@ -761,6 +795,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(ClienteView.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
         }
     }//GEN-LAST:event_tbJuridicaMouseClicked
 
@@ -804,6 +839,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
 
         JOptionPane.showMessageDialog(null, "Alterado com Sucesso");
         limpaCamposF();
+        desabilitaF();
           }
     }//GEN-LAST:event_btnAlterarActionPerformed
 
@@ -845,6 +881,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
         }
         JOptionPane.showMessageDialog(null, "Alterado com Sucesso");
         limpaCamposJ();
+        desabilitaJ();
         }
     }//GEN-LAST:event_btnAlterarJActionPerformed
 
@@ -865,6 +902,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
                 }
                 JOptionPane.showMessageDialog(null, "Excluido com sucesso");
                 limpaCamposJ();
+                desabilitaJ();
             }
         }
 
@@ -887,6 +925,7 @@ public class ClienteView extends javax.swing.JInternalFrame {
                 }
                 JOptionPane.showMessageDialog(null, "Excluido com sucesso");
                 limpaCamposF();
+                desabilitaF();
             }
         }
     }//GEN-LAST:event_btnExcluirFActionPerformed
@@ -898,6 +937,14 @@ public class ClienteView extends javax.swing.JInternalFrame {
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
       limpaCamposJ();
     }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnCancelarFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarFActionPerformed
+       desabilitaF();
+    }//GEN-LAST:event_btnCancelarFActionPerformed
+
+    private void btnCancelarJActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarJActionPerformed
+        desabilitaJ();
+    }//GEN-LAST:event_btnCancelarJActionPerformed
 
     public void limpaCamposF() {
 
@@ -913,6 +960,11 @@ public class ClienteView extends javax.swing.JInternalFrame {
         txtDtaNascimento.setText("");
         txtRG.setText("");
         txtNumeroF.setText("");
+        btnCadastrarF.setEnabled(true);
+        btnCancelarF.setEnabled(true);
+        btnAlterar.setEnabled(false);
+        btnExcluirF.setEnabled(false);
+        btnNovoF.setEnabled(false);
 
     }
 
@@ -930,8 +982,71 @@ public class ClienteView extends javax.swing.JInternalFrame {
         txtFundacao.setText("");
         txtInscrEstadual.setText("");
         txtNumeroJ.setText("");
+         btnCadastrarJ.setEnabled(true);
+        btnCancelarJ.setEnabled(true);
+        btnAlterarJ.setEnabled(false);
+        excluirJ.setEnabled(false);
+        btnNovo.setEnabled(false);
 
     }
+    
+    public void desabilitaJ(){
+        txtNomeJ.setText("");
+        txtCNPJ.setText("");
+        txtEnderecoJ.setText("");
+        txtEmailJ.setText("");
+        txtBairroJ.setText("");
+        txtTelefoneJ.setText("");
+        txtCelularJ.setText("");
+        txtCidadeJ.setText("");
+        txtCEPJ.setText("");
+        txtFundacao.setText("");
+        txtInscrEstadual.setText("");
+        txtNumeroJ.setText("");
+         btnCadastrarJ.setEnabled(false);
+        btnCancelarJ.setEnabled(false);
+        btnAlterarJ.setEnabled(false);
+        excluirJ.setEnabled(false);
+        btnNovo.setEnabled(true);
+    }
+    
+     public void desabilitaF(){
+         txtNomeF.setText("");
+        txtCPF.setText("");
+        txtEnderecoF.setText("");
+        txtEmailF.setText("");
+        txtBairroF.setText("");
+        txtTelefoneF.setText("");
+        txtCelularF.setText("");
+        txtCidadeF.setText("");
+        txtCEPF.setText("");
+        txtDtaNascimento.setText("");
+        txtRG.setText("");
+        txtNumeroF.setText("");
+        btnCadastrarF.setEnabled(false);
+        btnCancelarF.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluirF.setEnabled(false);
+        btnNovoF.setEnabled(true);
+    }
+     
+     public void alterarF(){
+         btnCadastrarF.setEnabled(false);
+         btnNovoF.setEnabled(false);
+         btnAlterar.setEnabled(true);
+         btnExcluirF.setEnabled(true);
+         btnCancelarF.setEnabled(true);
+         
+     }
+     
+      public void alterarJ(){
+         btnCadastrarJ.setEnabled(false);
+         btnNovo.setEnabled(false);
+         btnAlterarJ.setEnabled(true);
+         excluirJ.setEnabled(true);
+         btnCancelarJ.setEnabled(true);
+         
+     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -942,6 +1057,8 @@ public class ClienteView extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnAlterarJ;
     private javax.swing.JButton btnCadastrarF;
     private javax.swing.JButton btnCadastrarJ;
+    private javax.swing.JButton btnCancelarF;
+    private javax.swing.JButton btnCancelarJ;
     private javax.swing.JButton btnExcluirF;
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnNovoF;

@@ -122,6 +122,8 @@
                                   <Component id="btnAlterar" min="-2" pref="81" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnExcluirF" min="-2" pref="81" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="btnCancelarF" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
@@ -156,7 +158,7 @@
                                   </Group>
                               </Group>
                           </Group>
-                          <EmptySpace pref="408" max="32767" attributes="0"/>
+                          <EmptySpace pref="323" max="32767" attributes="0"/>
                       </Group>
                       <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
                   </Group>
@@ -221,6 +223,7 @@
                               <Component id="btnAlterar" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnExcluirF" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnNovoF" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnCancelarF" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="19" max="32767" attributes="0"/>
                           <Component id="jScrollPane1" min="-2" pref="230" max="-2" attributes="0"/>
@@ -260,6 +263,7 @@
                 <Component class="javax.swing.JButton" name="btnCadastrarF">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Cadastrar"/>
+                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCadastrarFActionPerformed"/>
@@ -395,6 +399,7 @@
                 <Component class="javax.swing.JButton" name="btnAlterar">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Alterar"/>
+                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAlterarActionPerformed"/>
@@ -403,6 +408,7 @@
                 <Component class="javax.swing.JButton" name="btnExcluirF">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Excluir"/>
+                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnExcluirFActionPerformed"/>
@@ -414,6 +420,15 @@
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNovoFActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnCancelarF">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Cancelar"/>
+                    <Property name="enabled" type="boolean" value="false"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarFActionPerformed"/>
                   </Events>
                 </Component>
               </SubComponents>
@@ -497,6 +512,8 @@
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="excluirJ" min="-2" pref="81" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="btnCancelarJ" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
@@ -526,7 +543,7 @@
                                   </Group>
                               </Group>
                           </Group>
-                          <EmptySpace pref="465" max="32767" attributes="0"/>
+                          <EmptySpace pref="380" max="32767" attributes="0"/>
                       </Group>
                       <Component id="jScrollPane2" alignment="0" pref="1023" max="32767" attributes="0"/>
                   </Group>
@@ -591,6 +608,7 @@
                               <Component id="btnAlterarJ" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="excluirJ" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnNovo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnCancelarJ" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="jScrollPane2" min="-2" pref="231" max="-2" attributes="0"/>
@@ -652,6 +670,7 @@
                 <Component class="javax.swing.JButton" name="btnCadastrarJ">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Cadastrar"/>
+                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCadastrarJActionPerformed"/>
@@ -763,6 +782,7 @@
                 <Component class="javax.swing.JButton" name="btnAlterarJ">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="alterar"/>
+                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAlterarJActionPerformed"/>
@@ -771,6 +791,7 @@
                 <Component class="javax.swing.JButton" name="excluirJ">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Excluir"/>
+                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="excluirJActionPerformed"/>
@@ -782,6 +803,15 @@
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNovoActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnCancelarJ">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Cancelar"/>
+                    <Property name="enabled" type="boolean" value="false"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarJActionPerformed"/>
                   </Events>
                 </Component>
               </SubComponents>
