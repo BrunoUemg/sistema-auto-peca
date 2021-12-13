@@ -738,6 +738,7 @@ public class EntradaView extends javax.swing.JInternalFrame {
             while(dm.getRowCount() > 0)
             {
                 dm.removeRow(0);
+                entrada.getItensProdutos().clear();
             }
     }
     
