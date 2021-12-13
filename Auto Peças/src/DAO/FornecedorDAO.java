@@ -76,6 +76,40 @@ public class FornecedorDAO {
         }
         return fornecedores;
     }
+    
+    public List<Fornecedor> readFornecedoresLike(String nome) throws SQLException {
+        ResultSet rs = null;
+        List<Fornecedor> fornecedores = new ArrayList<>();
+        try {
+            sql = "SELECT * FROM fornecedor WHERE razaoSocial LIKE ?";
+            pst = Conexao.getInstance().prepareStatement(sql);
+            pst.setString(1, "%"+nome+"%");
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Fornecedor fornecedor = new Fornecedor();
+                fornecedor.setIdForncedor(rs.getInt("idFornecedor"));
+                fornecedor.setRazaoSocial(rs.getString("razaoSocial"));
+                fornecedor.setNomeFantasia(rs.getString("nomeFantasia"));
+                fornecedor.setInscricaoEstadual(rs.getString("inscricaoEstadual"));
+                fornecedor.setCnpj(rs.getString("cnpj"));
+                fornecedor.setTelefone(rs.getString("telefone"));
+                fornecedor.setCelular(rs.getString("celular"));
+                fornecedor.setEmail(rs.getString("email"));
+                fornecedor.setEndereco(rs.getString("endereco"));
+                fornecedor.setBairro(rs.getString("bairro"));
+                fornecedor.setNumero(rs.getInt("numero"));
+                fornecedor.setCep(rs.getString("cep"));
+                fornecedor.setCidade(rs.getString("cidade"));
+                fornecedores.add(fornecedor);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            pst.close();
+        }
+        return fornecedores;
+    }
 
     public Fornecedor BuscarFornecedor(String codigo) throws SQLException {
         sql = "SELECT * FROM fornecedor WHERE idFornecedor = " + codigo;

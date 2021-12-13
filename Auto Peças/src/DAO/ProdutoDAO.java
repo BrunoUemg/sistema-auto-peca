@@ -79,6 +79,39 @@ public class ProdutoDAO {
         return produtos;
     }
     
+    public List<Produto> readProdutoLike(String nome) throws SQLException {
+        ResultSet rs = null;
+        List<Produto> produtos = new ArrayList<>();
+        try {
+            sql = "SELECT * FROM produto INNER JOIN categoria ON produto.idCategoria = categoria.idCategoria INNER JOIN marca ON produto.idMarca = marca.idMarca WHERE produto.nome LIKE ?";
+            pst = Conexao.getInstance().prepareStatement(sql);
+            pst.setString(1, "%"+nome+"%");
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Produto produto = new Produto();
+                produto.setIdProduto(rs.getInt("idProduto"));
+                produto.setNome(rs.getString("nome"));
+                produto.setDescricao(rs.getString("descricao"));
+                produto.setQuantidadeMin(rs.getInt("quantidadeMin"));
+                produto.setQuantidadeEstoque(rs.getInt("quantidadeEstoque"));
+                produto.setValorCompra(rs.getFloat("valorCompra"));
+                produto.setValorSaida(rs.getFloat("valorSaida"));
+                produto.setCodigoBarras(rs.getString("codigoBarras"));
+                produto.setIdCategoria(rs.getInt("idCategoria"));
+                produto.setIdMarca(rs.getInt("idMarca"));
+                produto.setNomeCategoria(rs.getString("descricaoCategoria"));
+                produto.setNomeMarca(rs.getString("nomeMarca"));
+                produtos.add(produto);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            pst.close();
+        }
+        return produtos;
+    }
+    
     public Produto BuscarProduto(String codigo) throws SQLException {
         sql = "SELECT * FROM produto INNER JOIN categoria ON produto.idCategoria = categoria.idCategoria INNER JOIN marca ON produto.IdMarca = marca.idMarca WHERE idProduto = " + codigo;
         pst = Conexao.getInstance().prepareStatement(sql);
