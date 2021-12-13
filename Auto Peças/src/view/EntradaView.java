@@ -11,6 +11,7 @@ import DAO.ProdutoDAO;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -88,8 +89,7 @@ public class EntradaView extends javax.swing.JInternalFrame {
         tbItens = new javax.swing.JTable();
         btnaddItem = new javax.swing.JButton();
         btnremoveItem = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        btnAlterar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
         btnNovo = new javax.swing.JButton();
         txtDataEntrada = new javax.swing.JFormattedTextField();
@@ -171,7 +171,6 @@ public class EntradaView extends javax.swing.JInternalFrame {
         );
 
         dialog_fornecedor.setMinimumSize(new java.awt.Dimension(720, 315));
-        dialog_fornecedor.setPreferredSize(new java.awt.Dimension(720, 315));
 
         btnaddSelectFornecedor.setText("Adicionar");
         btnaddSelectFornecedor.addActionListener(new java.awt.event.ActionListener() {
@@ -245,6 +244,10 @@ public class EntradaView extends javax.swing.JInternalFrame {
         setClosable(true);
         setTitle("Entrada");
 
+        txtNumNota.setEnabled(false);
+
+        txtChaveNota.setEnabled(false);
+
         jLabel1.setText("N° nota fiscal");
 
         jLabel2.setText("Valor Unitario");
@@ -258,6 +261,7 @@ public class EntradaView extends javax.swing.JInternalFrame {
         jLabel6.setText("Data da Entrada");
 
         addProduto.setText("Adicionar Produto");
+        addProduto.setEnabled(false);
         addProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addProdutoActionPerformed(evt);
@@ -265,6 +269,7 @@ public class EntradaView extends javax.swing.JInternalFrame {
         });
 
         addFornecedor.setText("Adicionar Fornecedor");
+        addFornecedor.setEnabled(false);
         addFornecedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addFornecedorActionPerformed(evt);
@@ -273,10 +278,7 @@ public class EntradaView extends javax.swing.JInternalFrame {
 
         tbItens.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Produto", "Fornecedor", "Quantidade ", "Preço", "Total"
@@ -293,6 +295,7 @@ public class EntradaView extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(tbItens);
 
         btnaddItem.setText("+");
+        btnaddItem.setEnabled(false);
         btnaddItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnaddItemActionPerformed(evt);
@@ -300,22 +303,23 @@ public class EntradaView extends javax.swing.JInternalFrame {
         });
 
         btnremoveItem.setText("-");
+        btnremoveItem.setEnabled(false);
         btnremoveItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnremoveItemActionPerformed(evt);
             }
         });
 
-        jButton5.setText("Cancelar");
-
-        btnAlterar.setText("Alterar");
-        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.setText("Cancelar");
+        btnCancelar.setEnabled(false);
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAlterarActionPerformed(evt);
+                btnCancelarActionPerformed(evt);
             }
         });
 
         btnSalvar.setText("Salvar");
+        btnSalvar.setEnabled(false);
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalvarActionPerformed(evt);
@@ -323,6 +327,11 @@ public class EntradaView extends javax.swing.JInternalFrame {
         });
 
         btnNovo.setText("Novo");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
 
         try {
             txtDataEntrada.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
@@ -335,6 +344,9 @@ public class EntradaView extends javax.swing.JInternalFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        txtDtNota.setEnabled(false);
+
+        txtValorTotal.setEnabled(false);
 
         jLabel9.setText("Valor Total Nota");
 
@@ -342,6 +354,12 @@ public class EntradaView extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnCancelar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnSalvar)
+                .addGap(27, 27, 27))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -366,7 +384,7 @@ public class EntradaView extends javax.swing.JInternalFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtChaveNota, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 247, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -388,27 +406,24 @@ public class EntradaView extends javax.swing.JInternalFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(txtQuantEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 215, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtDataEntrada, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(btnNovo)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnSalvar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnAlterar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton5)
-                                .addGap(154, 154, 154)
                                 .addComponent(btnaddItem)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnremoveItem))
-                            .addComponent(txtDataEntrada, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(btnremoveItem))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(99, 99, 99)
+                .addGap(58, 58, 58)
+                .addComponent(btnNovo)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -451,14 +466,14 @@ public class EntradaView extends javax.swing.JInternalFrame {
                         .addGap(47, 47, 47)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnremoveItem)
-                    .addComponent(btnaddItem)
-                    .addComponent(jButton5)
-                    .addComponent(btnAlterar)
-                    .addComponent(btnSalvar)
-                    .addComponent(btnNovo))
+                    .addComponent(btnaddItem))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(156, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSalvar)
+                    .addComponent(btnCancelar))
+                .addContainerGap(126, Short.MAX_VALUE))
         );
 
         pack();
@@ -569,6 +584,14 @@ public class EntradaView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnaddSelectFornecedorActionPerformed
 
     private void btnaddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddItemActionPerformed
+        if(txtProduto.getText().isEmpty() || txtValorItem.getText().isEmpty()
+                || txtValorTotal.getText().isEmpty() || txtQuantEntrada.getText().isEmpty() ||
+                txtNumNota.getText().isEmpty() || txtProduto.getText().isEmpty() ||
+                txtFornecedor.getText().isEmpty() || txtDataEntrada.getText().isEmpty()||
+                txtChaveNota.getText().isEmpty() || txtValorItem.getText().isEmpty() ||
+                txtDtNota.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Preencha os campos vazios!!");
+        }else{
         itemProduto = new ItensProdutos();
         itemProduto.setProduto(produto);
         itemProduto.setPrecoUnitario(Float.valueOf(txtValorItem.getText()));
@@ -590,18 +613,29 @@ public class EntradaView extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(EntradaView.class.getName()).log(Level.SEVERE, null, ex);
         }
+        preparaAdd();
+        }
     }//GEN-LAST:event_btnaddItemActionPerformed
 
     private void btnremoveItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnremoveItemActionPerformed
-        entrada.getItensProdutos().remove(tbItens.getSelectedRow());
+        if(tbItens.getSelectedRow() == -1){
+            JOptionPane.showMessageDialog(null, "Selecione um item da tabela");
+        }else{        entrada.getItensProdutos().remove(tbItens.getSelectedRow());
         try {
             readTabelaItens();
         } catch (SQLException ex) {
             Logger.getLogger(EntradaView.class.getName()).log(Level.SEVERE, null, ex);
         }
+        }
     }//GEN-LAST:event_btnremoveItemActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+       if(txtNumNota.getText().isEmpty()){
+           JOptionPane.showConfirmDialog(null, "Adicione um produto na tabela");
+           
+       }else{
+            int confirma = JOptionPane.showConfirmDialog(null, "Deseja salvar essa entrada?");
+            if (confirma == 0) {  
         String text1 = txtDtNota.getText();
         String text2 = txtDataEntrada.getText();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -625,19 +659,96 @@ public class EntradaView extends javax.swing.JInternalFrame {
             Logger.getLogger(EntradaView.class.getName()).log(Level.SEVERE, null, ex);
         }
         JOptionPane.showMessageDialog(null, "Entrada cadastrada com sucesso!");
-
+        desabilita();
+        limpaTb();
+       }
+       }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
-    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        preparaNovo();
+    }//GEN-LAST:event_btnNovoActionPerformed
 
-    }//GEN-LAST:event_btnAlterarActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        
+         int confirma = JOptionPane.showConfirmDialog(null, "Deseja cancelar essa entrada? todos os dados serão apagados");
+            if (confirma == 0) {        
+            desabilita();
+            limpaTb();
+            }
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
+    
+    public void preparaNovo(){
+        txtChaveNota.setEnabled(true);
+        txtDtNota.setEnabled(true);
+        txtNumNota.setEnabled(true);
+        txtValorTotal.setEnabled(true);
+        btnSalvar.setEnabled(false);
+        btnCancelar.setEnabled(true);
+        btnNovo.setEnabled(false);
+        btnaddItem.setEnabled(true);
+        btnremoveItem.setEnabled(true);
+        txtFornecedor.setEnabled(true);
+        txtDataEntrada.setEnabled(true);
+        addProduto.setEnabled(true);
+        addFornecedor.setEnabled(true);
+        txtChaveNota.setText("");
+        txtDataEntrada.setText("");
+        txtDtNota.setText("");
+        txtFornecedor.setText("");
+        txtNumNota.setText("");
+        txtProduto.setText("");
+        txtQuantEntrada.setText("");
+        txtValorTotal.setText("");
+        txtValorItem.setText("");
+    }
+    
+    public void preparaAdd(){
+        btnSalvar.setEnabled(true);
+    }
+    
+    public void desabilita(){
+        txtChaveNota.setEnabled(false);
+        txtDtNota.setEnabled(false);
+        txtNumNota.setEnabled(false);
+        txtValorTotal.setEnabled(false);
+        btnSalvar.setEnabled(false);
+        btnCancelar.setEnabled(false);
+        btnNovo.setEnabled(true);
+        btnaddItem.setEnabled(false);
+        btnremoveItem.setEnabled(false);
+        addProduto.setEnabled(false);
+        addFornecedor.setEnabled(false);
+        txtChaveNota.setText("");
+        txtDataEntrada.setText("");
+        txtDtNota.setText("");
+        txtFornecedor.setText("");
+        txtNumNota.setText("");
+        txtProduto.setText("");
+        txtQuantEntrada.setText("");
+        txtValorTotal.setText("");
+        txtValorItem.setText("");
+        txtFornecedor.setEnabled(false);
+       
+    }
+    
+    public void limpaTb(){
+         DefaultTableModel dm = (DefaultTableModel)tbItens.getModel();
+            while(dm.getRowCount() > 0)
+            {
+                dm.removeRow(0);
+            }
+    }
+    
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addFornecedor;
     private javax.swing.JButton addProduto;
     private javax.swing.JButton btnAdicionar;
-    private javax.swing.JButton btnAlterar;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnCancelarFornecedor;
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnSalvar;
@@ -646,7 +757,6 @@ public class EntradaView extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnremoveItem;
     private javax.swing.JDialog dialog_fornecedor;
     private javax.swing.JDialog dialog_produto;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

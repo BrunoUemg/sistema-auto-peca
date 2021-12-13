@@ -49,6 +49,7 @@ public class EntradaDAO {
             }
         }
         salvarItensEntrada(entrada.getItensProdutos(), idEntrada);
+        
         pst.close();
     }
 
