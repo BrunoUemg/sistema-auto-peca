@@ -5,7 +5,7 @@
  */
 package model;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,17 +14,19 @@ import java.util.List;
  * @author serpa
  */
 public class Entrada {
-    private int idEntrada;
-    private String numNota,chaveNota;
-    private double valorNota;
-    private Date dataNota,dataCompra;
-    private List<ItensProdutos> itensProdutos;
 
-    public Entrada(){
-       this.itensProdutos = new ArrayList<>();
+    private int idEntrada;
+    private String numNota, chaveNota;
+    private double valorNota;
+    private Date dataNota, dataCompra;
+    private List<ItensProdutos> itensProdutos;
+    private Fornecedor fornecedor;
+
+    public Entrada() {
+        this.itensProdutos = new ArrayList<>();
     }
 
-    public Entrada(int idEntrada, String numNota, String chaveNota, double valorNota, Date dataNota, Date dataCompra, List<ItensProdutos> itensProdutos) {
+    public Entrada(int idEntrada, String numNota, String chaveNota, double valorNota, Date dataNota, Date dataCompra, List<ItensProdutos> itensProdutos, Fornecedor fornecedor) {
         this.idEntrada = idEntrada;
         this.numNota = numNota;
         this.chaveNota = chaveNota;
@@ -32,6 +34,7 @@ public class Entrada {
         this.dataNota = dataNota;
         this.dataCompra = dataCompra;
         this.itensProdutos = itensProdutos;
+        this.fornecedor = fornecedor;
     }
 
     public int getIdEntrada() {
@@ -89,7 +92,13 @@ public class Entrada {
     public void setItensProdutos(List<ItensProdutos> itensProdutos) {
         this.itensProdutos = itensProdutos;
     }
-    
 
-    
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
+    }
+
 }

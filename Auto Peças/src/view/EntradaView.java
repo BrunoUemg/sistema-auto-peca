@@ -5,12 +5,15 @@
  */
 package view;
 
+import DAO.EntradaDAO;
 import DAO.FornecedorDAO;
 import DAO.ProdutoDAO;
-import java.awt.Dimension;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Entrada;
 import model.Fornecedor;
@@ -30,6 +33,7 @@ public class EntradaView extends javax.swing.JInternalFrame {
     FornecedorDAO fornecedorDAO;
     ItensProdutos itemProduto;
     Entrada entrada;
+    EntradaDAO entradaDAO;
 
     /**
      * Creates new form EntradaView
@@ -38,6 +42,7 @@ public class EntradaView extends javax.swing.JInternalFrame {
         produtoDAO = new ProdutoDAO();
         fornecedorDAO = new FornecedorDAO();
         entrada = new Entrada();
+        entradaDAO = new EntradaDAO();
         initComponents();
         this.setVisible(true);
     }
@@ -67,7 +72,6 @@ public class EntradaView extends javax.swing.JInternalFrame {
         tbFornecedor = new javax.swing.JTable();
         txtNumNota = new javax.swing.JTextField();
         txtValorItem = new javax.swing.JTextField();
-        txtDtNota = new javax.swing.JTextField();
         txtChaveNota = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -89,6 +93,9 @@ public class EntradaView extends javax.swing.JInternalFrame {
         btnSalvar = new javax.swing.JButton();
         btnNovo = new javax.swing.JButton();
         txtDataEntrada = new javax.swing.JFormattedTextField();
+        txtDtNota = new javax.swing.JFormattedTextField();
+        txtValorTotal = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
 
         dialog_produto.setMinimumSize(new java.awt.Dimension(720, 314));
 
@@ -248,7 +255,7 @@ public class EntradaView extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Quantidade entrada");
 
-        jLabel6.setText("Data compra");
+        jLabel6.setText("Data da Entrada");
 
         addProduto.setText("Adicionar Produto");
         addProduto.addActionListener(new java.awt.event.ActionListener() {
@@ -302,8 +309,18 @@ public class EntradaView extends javax.swing.JInternalFrame {
         jButton5.setText("Cancelar");
 
         btnAlterar.setText("Alterar");
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         btnNovo.setText("Novo");
 
@@ -312,6 +329,14 @@ public class EntradaView extends javax.swing.JInternalFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+
+        try {
+            txtDtNota.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        jLabel9.setText("Valor Total Nota");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -323,20 +348,24 @@ public class EntradaView extends javax.swing.JInternalFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel1)
-                                    .addGap(37, 37, 37)
-                                    .addComponent(txtNumNota, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel3)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtDtNota, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(1, 1, 1)
-                                .addComponent(jLabel4)
+                                .addComponent(jLabel1)
+                                .addGap(37, 37, 37)
+                                .addComponent(txtNumNota, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(27, 27, 27)
+                                .addComponent(txtDtNota, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(1, 1, 1)
+                                        .addComponent(jLabel4))
+                                    .addComponent(jLabel9))
                                 .addGap(18, 18, 18)
-                                .addComponent(txtChaveNota, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtChaveNota, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -382,10 +411,10 @@ public class EntradaView extends javax.swing.JInternalFrame {
                 .addGap(99, 99, 99)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(42, 42, 42))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(42, 42, 42))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(txtNumNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -402,20 +431,24 @@ public class EntradaView extends javax.swing.JInternalFrame {
                                         .addComponent(txtDtNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(21, 21, 21)
                                 .addComponent(txtQuantEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel4)
-                                    .addComponent(txtChaveNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(17, 17, 17)))
+                                    .addComponent(txtValorItem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2))
+                                .addGap(7, 7, 7)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtValorItem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addGap(7, 7, 7)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtDataEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addGap(33, 33, 33)
+                            .addComponent(txtDataEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6))
+                        .addGap(33, 33, 33))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(txtChaveNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9))
+                        .addGap(47, 47, 47)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnremoveItem)
                     .addComponent(btnaddItem)
@@ -481,7 +514,7 @@ public class EntradaView extends javax.swing.JInternalFrame {
 
         }
     }
-    
+
     public void readTabelaItens() throws SQLException {
         DefaultTableModel modelItens = (DefaultTableModel) tbItens.getModel();
         modelItens.setNumRows(0);
@@ -491,11 +524,11 @@ public class EntradaView extends javax.swing.JInternalFrame {
                 i.getFornecedor().getNomeFantasia(),
                 i.getQuantidade(),
                 i.getPrecoUnitario(),
-                i.getPrecoUnitario()*i.getQuantidade()
+                i.getPrecoUnitario() * i.getQuantidade()
             });
-
         }
     }
+
 
     private void txtPesquisarProdutoCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtPesquisarProdutoCaretUpdate
         try {
@@ -545,13 +578,13 @@ public class EntradaView extends javax.swing.JInternalFrame {
         txtNumNota.disable();
         txtChaveNota.disable();
         txtDtNota.disable();
-        txtFornecedor.setText("");
-        txtFornecedor.enable();
+        txtValorTotal.disable();
+        btnaddSelectFornecedor.disable();
         txtProduto.setText("");
         txtProduto.enable();
         txtQuantEntrada.setText("");
         txtValorItem.setText("");
-        txtDataEntrada.setText("");
+        txtDataEntrada.disable();
         try {
             readTabelaItens();
         } catch (SQLException ex) {
@@ -567,6 +600,37 @@ public class EntradaView extends javax.swing.JInternalFrame {
             Logger.getLogger(EntradaView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnremoveItemActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        String text1 = txtDtNota.getText();
+        String text2 = txtDataEntrada.getText();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        java.util.Date textFieldAsDate1 = null;
+        java.util.Date textFieldAsDate2 = null;
+        try {
+            textFieldAsDate1 = sdf.parse(text1);
+            textFieldAsDate2 = sdf.parse(text2);
+        } catch (ParseException ex) {
+            Logger.getLogger(EntradaView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        entrada.setChaveNota(txtChaveNota.getText());
+        entrada.setDataNota(textFieldAsDate1);
+        entrada.setDataCompra(textFieldAsDate2);
+        entrada.setFornecedor(fornecedor);
+        entrada.setNumNota(txtNumNota.getText());
+        entrada.setValorNota(Double.valueOf(txtValorTotal.getText()));
+        try {
+            entradaDAO.salvarEntrada(entrada);
+        } catch (SQLException ex) {
+            Logger.getLogger(EntradaView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        JOptionPane.showMessageDialog(null, "Entrada cadastrada com sucesso!");
+
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+
+    }//GEN-LAST:event_btnAlterarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -592,6 +656,7 @@ public class EntradaView extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jTable;
@@ -600,7 +665,7 @@ public class EntradaView extends javax.swing.JInternalFrame {
     private javax.swing.JTable tbProdutos;
     private javax.swing.JTextField txtChaveNota;
     private javax.swing.JFormattedTextField txtDataEntrada;
-    private javax.swing.JTextField txtDtNota;
+    private javax.swing.JFormattedTextField txtDtNota;
     private javax.swing.JTextField txtFornecedor;
     private javax.swing.JTextField txtNumNota;
     private javax.swing.JTextField txtPesquisarFornecedor;
@@ -608,6 +673,7 @@ public class EntradaView extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtProduto;
     private javax.swing.JTextField txtQuantEntrada;
     private javax.swing.JTextField txtValorItem;
+    private javax.swing.JTextField txtValorTotal;
     // End of variables declaration//GEN-END:variables
 
 }
