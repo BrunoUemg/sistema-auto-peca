@@ -66,6 +66,27 @@ public class EntradaDAO {
             if (affectedRows == 0) {
                 throw new SQLException("Erro ao adicionar itens.");
             }
+            
+            
+            String bus = "SELECT * FROM produto where idProduto = " + itens.getProduto().getIdProduto();
+            
+            ResultSet rs = pst.executeQuery(bus);
+            int quantidade = 0;
+            int quantidadeFinal = 0;
+            
+            while (rs.next()) {
+                   quantidade = rs.getInt("quantidadeEstoque");
+                }
+            quantidadeFinal = quantidade + itens.getQuantidade();
+            sql = "UPDATE produto set quantidadeEstoque = ? where idProduto = ?";
+            pst = Conexao.getInstance().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            pst.setInt(1, quantidadeFinal);
+            pst.setInt(2, itens.getProduto().getIdProduto());
+            int affectedRows2 = pst.executeUpdate();
+            if (affectedRows2 == 0) {
+                throw new SQLException("Erro ao adicionar itens.");
+            }
+            
         }
     }
 }

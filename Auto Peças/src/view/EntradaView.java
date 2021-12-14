@@ -603,6 +603,7 @@ public class EntradaView extends javax.swing.JInternalFrame {
         txtDtNota.disable();
         txtValorTotal.disable();
         btnaddSelectFornecedor.disable();
+        addFornecedor.setEnabled(false);
         txtProduto.setText("");
         txtProduto.enable();
         txtQuantEntrada.setText("");
