@@ -346,6 +346,7 @@ public class EntradaView extends javax.swing.JInternalFrame {
         }
         txtDtNota.setEnabled(false);
 
+        txtValorTotal.setEditable(false);
         txtValorTotal.setEnabled(false);
 
         jLabel9.setText("Valor Total Nota");
@@ -514,6 +515,14 @@ public class EntradaView extends javax.swing.JInternalFrame {
         }
     }
 
+    public void updateTotal() {
+        double total = 0;
+        for (ItensProdutos i : entrada.getItensProdutos()) {
+            total += (double) i.getPrecoUnitario() * (double) i.getQuantidade();
+        }
+        txtValorTotal.setText(String.valueOf(total));
+    }
+
     public void readJTableFornecedor(String nome) throws SQLException {
         DefaultTableModel modelF = (DefaultTableModel) tbFornecedor.getModel();
         modelF.setNumRows(0);
@@ -584,86 +593,88 @@ public class EntradaView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnaddSelectFornecedorActionPerformed
 
     private void btnaddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddItemActionPerformed
-        if(txtProduto.getText().isEmpty() || txtValorItem.getText().isEmpty()
-                || txtValorTotal.getText().isEmpty() || txtQuantEntrada.getText().isEmpty() ||
-                txtNumNota.getText().isEmpty() || txtProduto.getText().isEmpty() ||
-                txtFornecedor.getText().isEmpty() || txtDataEntrada.getText().isEmpty()||
-                txtChaveNota.getText().isEmpty() || txtValorItem.getText().isEmpty() ||
-                txtDtNota.getText().isEmpty()){
+        if (txtProduto.getText().isEmpty() || txtValorItem.getText().isEmpty()
+                || txtQuantEntrada.getText().isEmpty()
+                || txtNumNota.getText().isEmpty() || txtProduto.getText().isEmpty()
+                || txtFornecedor.getText().isEmpty() || txtDataEntrada.getText().isEmpty()
+                || txtChaveNota.getText().isEmpty() || txtValorItem.getText().isEmpty()
+                || txtDtNota.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Preencha os campos vazios!!");
-        }else{
-        itemProduto = new ItensProdutos();
-        itemProduto.setProduto(produto);
-        itemProduto.setPrecoUnitario(Float.valueOf(txtValorItem.getText()));
-        itemProduto.setQuantidade(Integer.valueOf(txtQuantEntrada.getText()));
-        itemProduto.setFornecedor(fornecedor);
-        entrada.getItensProdutos().add(itemProduto);
-        txtNumNota.disable();
-        txtChaveNota.disable();
-        txtDtNota.disable();
-        txtValorTotal.disable();
-        btnaddSelectFornecedor.disable();
-        addFornecedor.setEnabled(false);
-        txtProduto.setText("");
-        txtProduto.enable();
-        txtQuantEntrada.setText("");
-        txtValorItem.setText("");
-        txtDataEntrada.disable();
-        try {
-            readTabelaItens();
-        } catch (SQLException ex) {
-            Logger.getLogger(EntradaView.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        preparaAdd();
+        } else {
+            itemProduto = new ItensProdutos();
+            itemProduto.setProduto(produto);
+            itemProduto.setPrecoUnitario(Float.valueOf(txtValorItem.getText()));
+            itemProduto.setQuantidade(Integer.valueOf(txtQuantEntrada.getText()));
+            itemProduto.setFornecedor(fornecedor);
+            entrada.getItensProdutos().add(itemProduto);
+            txtNumNota.disable();
+            txtChaveNota.disable();
+            txtDtNota.disable();
+            txtValorTotal.disable();
+            btnaddSelectFornecedor.disable();
+            addFornecedor.setEnabled(false);
+            txtProduto.setText("");
+            txtProduto.enable();
+            txtQuantEntrada.setText("");
+            txtValorItem.setText("");
+            txtDataEntrada.disable();
+            try {
+                readTabelaItens();
+            } catch (SQLException ex) {
+                Logger.getLogger(EntradaView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            preparaAdd();
+            updateTotal();
         }
     }//GEN-LAST:event_btnaddItemActionPerformed
 
     private void btnremoveItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnremoveItemActionPerformed
-        if(tbItens.getSelectedRow() == -1){
+        if (tbItens.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(null, "Selecione um item da tabela");
-        }else{        entrada.getItensProdutos().remove(tbItens.getSelectedRow());
-        try {
-            readTabelaItens();
-        } catch (SQLException ex) {
-            Logger.getLogger(EntradaView.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } else {
+            entrada.getItensProdutos().remove(tbItens.getSelectedRow());
+            try {
+                readTabelaItens();
+            } catch (SQLException ex) {
+                Logger.getLogger(EntradaView.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnremoveItemActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-       if(txtNumNota.getText().isEmpty()){
-           JOptionPane.showConfirmDialog(null, "Adicione um produto na tabela");
-           
-       }else{
+        if (txtNumNota.getText().isEmpty()) {
+            JOptionPane.showConfirmDialog(null, "Adicione um produto na tabela");
+
+        } else {
             int confirma = JOptionPane.showConfirmDialog(null, "Deseja salvar essa entrada?");
-            if (confirma == 0) {  
-        String text1 = txtDtNota.getText();
-        String text2 = txtDataEntrada.getText();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        java.util.Date textFieldAsDate1 = null;
-        java.util.Date textFieldAsDate2 = null;
-        try {
-            textFieldAsDate1 = sdf.parse(text1);
-            textFieldAsDate2 = sdf.parse(text2);
-        } catch (ParseException ex) {
-            Logger.getLogger(EntradaView.class.getName()).log(Level.SEVERE, null, ex);
+            if (confirma == 0) {
+                String text1 = txtDtNota.getText();
+                String text2 = txtDataEntrada.getText();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                java.util.Date textFieldAsDate1 = null;
+                java.util.Date textFieldAsDate2 = null;
+                try {
+                    textFieldAsDate1 = sdf.parse(text1);
+                    textFieldAsDate2 = sdf.parse(text2);
+                } catch (ParseException ex) {
+                    Logger.getLogger(EntradaView.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                entrada.setChaveNota(txtChaveNota.getText());
+                entrada.setDataNota(textFieldAsDate1);
+                entrada.setDataCompra(textFieldAsDate2);
+                entrada.setFornecedor(fornecedor);
+                entrada.setNumNota(txtNumNota.getText());
+                entrada.setValorNota(Double.valueOf(txtValorTotal.getText()));
+                try {
+                    entradaDAO.salvarEntrada(entrada);
+                } catch (SQLException ex) {
+                    Logger.getLogger(EntradaView.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                JOptionPane.showMessageDialog(null, "Entrada cadastrada com sucesso!");
+                desabilita();
+                limpaTb();
+            }
         }
-        entrada.setChaveNota(txtChaveNota.getText());
-        entrada.setDataNota(textFieldAsDate1);
-        entrada.setDataCompra(textFieldAsDate2);
-        entrada.setFornecedor(fornecedor);
-        entrada.setNumNota(txtNumNota.getText());
-        entrada.setValorNota(Double.valueOf(txtValorTotal.getText()));
-        try {
-            entradaDAO.salvarEntrada(entrada);
-        } catch (SQLException ex) {
-            Logger.getLogger(EntradaView.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        JOptionPane.showMessageDialog(null, "Entrada cadastrada com sucesso!");
-        desabilita();
-        limpaTb();
-       }
-       }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
@@ -671,16 +682,15 @@ public class EntradaView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        
-         int confirma = JOptionPane.showConfirmDialog(null, "Deseja cancelar essa entrada? todos os dados serão apagados");
-            if (confirma == 0) {        
+
+        int confirma = JOptionPane.showConfirmDialog(null, "Deseja cancelar essa entrada? todos os dados serão apagados");
+        if (confirma == 0) {
             desabilita();
             limpaTb();
-            }
+        }
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    
-    public void preparaNovo(){
+    public void preparaNovo() {
         txtChaveNota.setEnabled(true);
         txtDtNota.setEnabled(true);
         txtNumNota.setEnabled(true);
@@ -704,12 +714,12 @@ public class EntradaView extends javax.swing.JInternalFrame {
         txtValorTotal.setText("");
         txtValorItem.setText("");
     }
-    
-    public void preparaAdd(){
+
+    public void preparaAdd() {
         btnSalvar.setEnabled(true);
     }
-    
-    public void desabilita(){
+
+    public void desabilita() {
         txtChaveNota.setEnabled(false);
         txtDtNota.setEnabled(false);
         txtNumNota.setEnabled(false);
@@ -731,20 +741,17 @@ public class EntradaView extends javax.swing.JInternalFrame {
         txtValorTotal.setText("");
         txtValorItem.setText("");
         txtFornecedor.setEnabled(false);
-       
-    }
-    
-    public void limpaTb(){
-         DefaultTableModel dm = (DefaultTableModel)tbItens.getModel();
-            while(dm.getRowCount() > 0)
-            {
-                dm.removeRow(0);
-                entrada.getItensProdutos().clear();
-            }
-    }
-    
 
-    
+    }
+
+    public void limpaTb() {
+        DefaultTableModel dm = (DefaultTableModel) tbItens.getModel();
+        while (dm.getRowCount() > 0) {
+            dm.removeRow(0);
+            entrada.getItensProdutos().clear();
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addFornecedor;
