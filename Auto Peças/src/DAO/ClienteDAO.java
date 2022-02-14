@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Cliente;
 
 /**
  *
@@ -139,6 +140,37 @@ public class ClienteDAO {
         }
         return clientesFisico;
     }
+    
+    public List<Cliente> readCliente(String nome) throws SQLException {
+        ResultSet rs = null;
+        List<Cliente> clientes = new ArrayList<>();
+        try {
+            sql = "SELECT * FROM cliente WHERE nome LIKE ? ";
+            pst = Conexao.getInstance().prepareStatement(sql);
+            pst.setString(1, "%"+nome+"%");
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Cliente cliente = new Cliente();
+                cliente.setIdCliente(rs.getInt("idcliente"));
+                cliente.setNome(rs.getString("nome"));
+                cliente.setEndereco(rs.getString("endereco"));
+                cliente.setBairro(rs.getString("bairro"));
+                cliente.setNumero(rs.getString("numero"));
+                cliente.setCep(rs.getString("cep"));
+                cliente.setCidade(rs.getString("cidade"));
+                cliente.setTelefone(rs.getString("telefone"));
+                cliente.setCelular(rs.getString("celular"));
+                cliente.setEmail(rs.getString("email"));
+                clientes.add(cliente);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            pst.close();
+        }
+        return clientes;
+    }
 
     public List<ClienteJuridico> readJ() throws SQLException {
         ResultSet rs = null;
@@ -196,6 +228,28 @@ public class ClienteDAO {
         }
         pst.close();
         return clij;
+    }
+    
+    public Cliente BuscarCliente(String codigo) throws SQLException {
+        sql = "SELECT * FROM cliente WHERE idcliente = " + codigo;
+        pst = Conexao.getInstance().prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+        Cliente cli = null;
+        while (rs.next()) {
+            cli = new Cliente(
+                    rs.getInt("idcliente"),
+                    rs.getString("nome"),
+                    rs.getString("endereco"),
+                    rs.getString("bairro"),
+                    rs.getString("numero"),
+                    rs.getString("cep"),
+                    rs.getString("cidade"),
+                    rs.getString("telefone"),
+                    rs.getString("celular"),
+                    rs.getString("email"));
+        }
+        pst.close();
+        return cli;
     }
     
     

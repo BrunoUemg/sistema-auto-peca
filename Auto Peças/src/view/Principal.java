@@ -24,9 +24,9 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         this.setVisible(false);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        
+
         Session session = Session.getInstance();
-        labelNome.setText("Bem-vindo(a) "+session.getNome());
+        labelNome.setText("Bem-vindo(a) " + session.getNome());
         if ("Vendedor".equals(session.getCargo())) {
             btnFornecedores.setVisible(false);
             btnFuncionario.setVisible(false);
@@ -42,6 +42,7 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuItem1 = new javax.swing.JMenuItem();
         pnlPrincipal = new javax.swing.JPanel();
         labelNome = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -51,8 +52,12 @@ public class Principal extends javax.swing.JFrame {
         btnProdutos = new javax.swing.JMenuItem();
         btnFuncionario = new javax.swing.JMenuItem();
         btnEntrada = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+
+        jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -120,6 +125,23 @@ public class Principal extends javax.swing.JFrame {
         jMenu1.add(btnEntrada);
 
         jMenuBar1.add(jMenu1);
+
+        jMenu3.setText("Venda");
+        jMenu3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu3ActionPerformed(evt);
+            }
+        });
+
+        jMenuItem3.setText("Venda");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem3);
+
+        jMenuBar1.add(jMenu3);
 
         jMenu2.setText("Sair");
 
@@ -197,6 +219,18 @@ public class Principal extends javax.swing.JFrame {
         pnlPrincipal.updateUI();
     }//GEN-LAST:event_btnEntradaActionPerformed
 
+    private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
+
+    }//GEN-LAST:event_jMenu3ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        VendaView venda;
+        venda = new VendaView();
+        pnlPrincipal.removeAll();
+        pnlPrincipal.add(venda);
+        pnlPrincipal.updateUI();
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -209,8 +243,11 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem btnProdutos;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JLabel labelNome;
     private javax.swing.JPanel pnlPrincipal;
     // End of variables declaration//GEN-END:variables
