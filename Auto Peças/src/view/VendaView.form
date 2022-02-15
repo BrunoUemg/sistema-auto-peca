@@ -274,7 +274,7 @@
                                   <Component id="txtQuantVenda" min="-2" pref="119" max="-2" attributes="0"/>
                                   <Component id="txtValorItem" alignment="0" min="-2" pref="119" max="-2" attributes="0"/>
                                   <Component id="txtVendedor" alignment="0" pref="250" max="32767" attributes="0"/>
-                                  <Component id="txtFornecedor" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtCliente" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -298,7 +298,7 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="txtFornecedor" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtCliente" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="addCliente" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -359,7 +359,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtQuantVenda">
     </Component>
-    <Component class="javax.swing.JTextField" name="txtFornecedor">
+    <Component class="javax.swing.JTextField" name="txtCliente">
     </Component>
     <Component class="javax.swing.JTextField" name="txtProduto">
     </Component>

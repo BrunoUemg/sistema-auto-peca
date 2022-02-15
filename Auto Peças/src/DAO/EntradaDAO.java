@@ -77,11 +77,12 @@ public class EntradaDAO {
                 quantidade = rs.getInt("quantidadeEstoque");
             }
             quantidadeFinal = quantidade + itens.getQuantidade();
-            sql = "UPDATE produto set quantidadeEstoque = ?, valorCompra = ? where idProduto = ?";
+            sql = "UPDATE produto set quantidadeEstoque = ?, valorCompra = ?, valorSaida = ? where idProduto = ?";
             pst = Conexao.getInstance().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             pst.setInt(1, quantidadeFinal);
             pst.setDouble(2, itens.getPrecoUnitario());
-            pst.setInt(3, itens.getProduto().getIdProduto());
+            pst.setDouble(3, itens.getProduto().getValorSaida());
+            pst.setInt(4, itens.getProduto().getIdProduto());
             int affectedRows2 = pst.executeUpdate();
             if (affectedRows2 == 0) {
                 throw new SQLException("Erro ao adicionar itens.");

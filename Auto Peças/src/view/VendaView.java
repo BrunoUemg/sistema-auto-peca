@@ -87,7 +87,7 @@ public class VendaView extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         txtQuantVenda = new javax.swing.JTextField();
-        txtFornecedor = new javax.swing.JTextField();
+        txtCliente = new javax.swing.JTextField();
         txtProduto = new javax.swing.JTextField();
         addProduto = new javax.swing.JButton();
         addCliente = new javax.swing.JButton();
@@ -391,7 +391,7 @@ public class VendaView extends javax.swing.JInternalFrame {
                                     .addComponent(txtQuantVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtValorItem, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtVendedor, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                                    .addComponent(txtFornecedor))))
+                                    .addComponent(txtCliente))))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -407,7 +407,7 @@ public class VendaView extends javax.swing.JInternalFrame {
                             .addComponent(txtProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(addCliente))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -530,6 +530,7 @@ public class VendaView extends javax.swing.JInternalFrame {
                 Logger.getLogger(VendaView.class.getName()).log(Level.SEVERE, null, ex);
             }
             txtProduto.setText(produto.getNome());
+            txtValorItem.setText(String.valueOf(produto.getValorSaida()));
             txtProduto.disable();
             dialog_produto.dispose();
         }
@@ -546,8 +547,8 @@ public class VendaView extends javax.swing.JInternalFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(VendaView.class.getName()).log(Level.SEVERE, null, ex);
             }
-            txtFornecedor.setText(cliente.getNome());
-            txtFornecedor.disable();
+            txtCliente.setText(cliente.getNome());
+            txtCliente.disable();
             dialog_cliente.dispose();
         }
     }//GEN-LAST:event_btnaddSelectFornecedorActionPerformed
@@ -578,6 +579,7 @@ public class VendaView extends javax.swing.JInternalFrame {
                 preparaAdd();
                 txtValorTotal.setText("Valor Total: " + String.valueOf(updateTotal()));
             }else{
+                txtQuantVenda.setText(String.valueOf(produto.getQuantidadeEstoque()));
                 JOptionPane.showMessageDialog(null, "Verifique a quantidade, estoque menor que o informado!");
             }
         }
@@ -671,10 +673,10 @@ public class VendaView extends javax.swing.JInternalFrame {
         btnNovo.setEnabled(false);
         btnaddItem.setEnabled(true);
         btnremoveItem.setEnabled(true);
-        txtFornecedor.setEnabled(true);
+        txtCliente.setEnabled(true);
         addProduto.setEnabled(true);
         addCliente.setEnabled(true);
-        txtFornecedor.setText("");
+        txtCliente.setText("");
         txtProduto.setText("");
         txtQuantVenda.setText("");
         txtValorTotal.setText("");
@@ -694,12 +696,12 @@ public class VendaView extends javax.swing.JInternalFrame {
         btnremoveItem.setEnabled(false);
         addProduto.setEnabled(false);
         addCliente.setEnabled(false);
-        txtFornecedor.setText("");
+        txtCliente.setText("");
         txtProduto.setText("");
         txtQuantVenda.setText("");
         txtValorTotal.setText("");
         txtValorItem.setText("");
-        txtFornecedor.setEnabled(false);
+        txtCliente.setEnabled(false);
 
     }
 
@@ -738,8 +740,8 @@ public class VendaView extends javax.swing.JInternalFrame {
     private javax.swing.JTable tbCliente;
     private javax.swing.JTable tbItens;
     private javax.swing.JTable tbProdutos;
+    private javax.swing.JTextField txtCliente;
     private javax.swing.JFormattedTextField txtData;
-    private javax.swing.JTextField txtFornecedor;
     private javax.swing.JTextField txtPesquisarCliente;
     private javax.swing.JTextField txtPesquisarProduto;
     private javax.swing.JTextField txtProduto;
