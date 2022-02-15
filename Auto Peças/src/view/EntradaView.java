@@ -643,6 +643,7 @@ public class EntradaView extends javax.swing.JInternalFrame {
             txtProduto.enable();
             txtQuantEntrada.setText("");
             txtValorItem.setText("");
+            txtSaida.setText("");
             txtDataEntrada.disable();
             try {
                 readTabelaItens();
@@ -739,6 +740,7 @@ public class EntradaView extends javax.swing.JInternalFrame {
         txtQuantEntrada.setText("");
         txtValorTotal.setText("");
         txtValorItem.setText("");
+        txtSaida.setText("");
     }
 
     public void preparaAdd() {
@@ -766,6 +768,7 @@ public class EntradaView extends javax.swing.JInternalFrame {
         txtQuantEntrada.setText("");
         txtValorTotal.setText("");
         txtValorItem.setText("");
+        txtSaida.setText("");
         txtFornecedor.setEnabled(false);
 
     }
