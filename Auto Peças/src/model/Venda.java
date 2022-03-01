@@ -33,6 +33,14 @@ public class Venda {
         this.valorTotal = valorTotal;
         this.itensVenda = itensVenda;
     }
+    
+    public Venda(int idVenda, int idFunc, Cliente cli, Date dataVenda, double valorTotal) {
+        this.idVenda = idVenda;
+        this.idFunc = idFunc;
+        this.cli = cli;
+        this.dataVenda = dataVenda;
+        this.valorTotal = valorTotal;
+    }
 
     public int getIdVenda() {
         return idVenda;

@@ -10,16 +10,33 @@ import DAO.EntradaDAO;
 import DAO.ProdutoDAO;
 import DAO.Session;
 import DAO.VendaDAO;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
+import com.lowagie.text.Font;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
+import java.awt.Desktop;
+import java.awt.HeadlessException;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Cliente;
+import model.ClienteFisico;
 import model.Entrada;
 import model.ItensProdutos;
 import model.ItensVenda;
@@ -40,6 +57,7 @@ public class VendaView extends javax.swing.JInternalFrame {
     ClienteDAO clienteDAO;
     VendaDAO vendaDAO;
     Cliente cliente;
+    Document doc;
 
     /**
      * Creates new form EntradaView
@@ -578,7 +596,7 @@ public class VendaView extends javax.swing.JInternalFrame {
                 }
                 preparaAdd();
                 txtValorTotal.setText("Valor Total: " + String.valueOf(updateTotal()));
-            }else{
+            } else {
                 txtQuantVenda.setText(String.valueOf(produto.getQuantidadeEstoque()));
                 JOptionPane.showMessageDialog(null, "Verifique a quantidade, estoque menor que o informado!");
             }
@@ -624,10 +642,121 @@ public class VendaView extends javax.swing.JInternalFrame {
                 }
                 JOptionPane.showMessageDialog(null, "Venda cadastrada com sucesso!");
                 desabilita();
-                limpaTb();
+                String nomeDiretorio = null;
+                String nomePasta = "SRS";
+                String separador = java.io.File.separator;
+                try {
+                    nomeDiretorio = "C:" + separador + nomePasta;
+                    if (!new File(nomeDiretorio).exists()) {
+                        (new File(nomeDiretorio)).mkdir();
+                    }
+                    gerarComprovanteVenda(venda);
+                    limpaTb();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
+
+    public void gerarComprovanteVenda(Venda venda) {
+        try {
+            double totalCompra = 0;
+            List<ItensVenda> lista = new ArrayList<>();
+            lista = venda.getItensVenda();
+            doc = new Document(PageSize.A4, 41.5f, 41.5f, 55.2f, 55.2f);
+            PdfWriter.getInstance(doc, new FileOutputStream("C:/SRS/ComprovanteVenda" + ".pdf"));
+            doc.open();
+
+            Font f1 = new Font(Font.HELVETICA, 14, Font.BOLD);
+            Font f2 = new Font(Font.HELVETICA, 12, Font.BOLD);
+            Font f3 = new Font(Font.HELVETICA, 12, Font.NORMAL);
+            Font f4 = new Font(Font.HELVETICA, 10, Font.BOLD);
+            Font f5 = new Font(Font.HELVETICA, 10, Font.NORMAL);
+
+            Paragraph titulo1 = new Paragraph("Comprovante de Venda", f2);
+            titulo1.setAlignment(Element.ALIGN_CENTER);
+            titulo1.setSpacingAfter(10);
+
+            Paragraph titulo2 = new Paragraph("Cliente: " + venda.getCli().getNome(), f1);
+            titulo2.setAlignment(Element.ALIGN_CENTER);
+            titulo2.setSpacingAfter(10);
+
+            PdfPTable tabela = new PdfPTable(new float[]{0.60f, 0.40f, 0.40f, 0.40f});
+            tabela.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tabela.setWidthPercentage(100f);
+
+            PdfPCell cabecalho1 = new PdfPCell(new Paragraph("Produto", f3));
+            cabecalho1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cabecalho1.setBorder(0);
+
+            PdfPCell cabecalho2 = new PdfPCell(new Paragraph("Quantidade", f3));
+            cabecalho2.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cabecalho2.setBorder(0);
+
+            PdfPCell cabecalho3 = new PdfPCell(new Paragraph("Preço Unitario", f3));
+            cabecalho3.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cabecalho3.setBorder(0);
+
+            PdfPCell cabecalho4 = new PdfPCell(new Paragraph("Total ", f3));
+            cabecalho4.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cabecalho4.setBorder(0);
+
+            tabela.addCell(cabecalho1);
+            tabela.addCell(cabecalho2);
+            tabela.addCell(cabecalho3);
+            tabela.addCell(cabecalho4);
+
+            for (ItensVenda itensVenda : lista) {
+                Paragraph p1 = new Paragraph(itensVenda.getProduto().getNome(), f5);
+                p1.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col1 = new PdfPCell(p1);
+                col1.setBorder(PdfPCell.BOX);
+
+                Paragraph p2 = new Paragraph(String.valueOf(itensVenda.getQuantidade()), f5);
+                p2.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col2 = new PdfPCell(p2);
+                col2.setBorder(PdfPCell.BOX);
+
+                Paragraph p3 = new Paragraph(String.valueOf(itensVenda.getPrecoUnitario()), f5);
+                p3.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col3 = new PdfPCell(p3);
+                col3.setBorder(PdfPCell.BOX);
+
+                Paragraph p4 = new Paragraph(String.valueOf(itensVenda.getPrecoUnitario() * itensVenda.getQuantidade()), f5);
+                p4.setAlignment(Element.ALIGN_JUSTIFIED);
+                PdfPCell col4 = new PdfPCell(p4);
+                col4.setBorder(PdfPCell.BOX);
+
+                totalCompra += itensVenda.getPrecoUnitario() * itensVenda.getQuantidade();
+                tabela.addCell(col1);
+                tabela.addCell(col2);
+                tabela.addCell(col3);
+                tabela.addCell(col4);
+            }
+            doc.add(titulo1);
+            doc.add(titulo2);
+            
+            Paragraph p5 = new Paragraph(String.valueOf(totalCompra), f5);
+            p5.setAlignment(Element.ALIGN_RIGHT);
+            PdfPCell col5 = new PdfPCell(p5);
+            col5.setBorder(PdfPCell.BOX);
+            col5.setColspan(4);
+            tabela.addCell(col5);
+            
+            doc.add(tabela);
+            doc.close();
+            JOptionPane.showMessageDialog(null, "Relatório salvo com sucesso");
+            String caminho = "C:/SRS/ComprovanteVenda.pdf";
+            Desktop.getDesktop().open(new File(caminho));
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        } catch (HeadlessException ex) {
+            ex.printStackTrace();
+        } catch (IOException exx) {
+            JOptionPane.showMessageDialog(null, "Documento de Requisitos aberto. Feche para gerar um novo.");
+        }
+    }
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         preparaNovo();

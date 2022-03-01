@@ -46,7 +46,7 @@ public class ProdutoDAO {
         }
         return "Erro ao salvar produto!";
     }
-    
+
     public List<Produto> readProduto() throws SQLException {
         ResultSet rs = null;
         List<Produto> produtos = new ArrayList<>();
@@ -78,14 +78,77 @@ public class ProdutoDAO {
         }
         return produtos;
     }
-    
+
+        public List<Produto> readProdutoTop() throws SQLException {
+        ResultSet rs = null;
+        List<Produto> produtos = new ArrayList<>();
+        try {
+            sql = "SELECT *, sum(item_venda.quantidade) as totalVendas FROM item_venda INNER JOIN produto ON item_venda.idProduto = produto.idProduto GROUP BY item_venda.idProduto ORDER BY totalVendas DESC";
+            pst = Conexao.getInstance().prepareStatement(sql);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Produto produto = new Produto();
+                produto.setIdProduto(rs.getInt("idProduto"));
+                produto.setNome(rs.getString("nome"));
+                produto.setDescricao(rs.getString("descricao"));
+                produto.setQuantidadeMin(rs.getInt("quantidadeMin"));
+                produto.setQuantidadeEstoque(rs.getInt("quantidadeEstoque"));
+                produto.setValorCompra(rs.getFloat("valorCompra"));
+                produto.setValorSaida(rs.getFloat("valorSaida"));
+                produto.setCodigoBarras(rs.getString("codigoBarras"));
+                produto.setIdCategoria(rs.getInt("idCategoria"));
+                produto.setIdMarca(rs.getInt("idMarca"));
+                produto.setNomeCategoria(rs.getString("totalVendas"));
+                produtos.add(produto);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            pst.close();
+        }
+        return produtos;
+    }
+
+    public List<Produto> readProdutoEstoque() throws SQLException {
+        ResultSet rs = null;
+        List<Produto> produtos = new ArrayList<>();
+        try {
+            sql = "SELECT * FROM produto INNER JOIN categoria ON produto.idCategoria = categoria.idCategoria INNER JOIN marca ON produto.idMarca = marca.idMarca WHERE produto.quantidadeEstoque<produto.quantidadeMin";
+            pst = Conexao.getInstance().prepareStatement(sql);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Produto produto = new Produto();
+                produto.setIdProduto(rs.getInt("idProduto"));
+                produto.setNome(rs.getString("nome"));
+                produto.setDescricao(rs.getString("descricao"));
+                produto.setQuantidadeMin(rs.getInt("quantidadeMin"));
+                produto.setQuantidadeEstoque(rs.getInt("quantidadeEstoque"));
+                produto.setValorCompra(rs.getFloat("valorCompra"));
+                produto.setValorSaida(rs.getFloat("valorSaida"));
+                produto.setCodigoBarras(rs.getString("codigoBarras"));
+                produto.setIdCategoria(rs.getInt("idCategoria"));
+                produto.setIdMarca(rs.getInt("idMarca"));
+                produto.setNomeCategoria(rs.getString("descricaoCategoria"));
+                produto.setNomeMarca(rs.getString("nomeMarca"));
+                produtos.add(produto);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            pst.close();
+        }
+        return produtos;
+    }
+
     public List<Produto> readProdutoLike(String nome) throws SQLException {
         ResultSet rs = null;
         List<Produto> produtos = new ArrayList<>();
         try {
             sql = "SELECT * FROM produto INNER JOIN categoria ON produto.idCategoria = categoria.idCategoria INNER JOIN marca ON produto.idMarca = marca.idMarca WHERE produto.nome LIKE ?";
             pst = Conexao.getInstance().prepareStatement(sql);
-            pst.setString(1, "%"+nome+"%");
+            pst.setString(1, "%" + nome + "%");
             rs = pst.executeQuery();
 
             while (rs.next()) {
@@ -111,14 +174,14 @@ public class ProdutoDAO {
         }
         return produtos;
     }
-    
+
     public List<Produto> readProdutoLikeEstoque(String nome) throws SQLException {
         ResultSet rs = null;
         List<Produto> produtos = new ArrayList<>();
         try {
             sql = "SELECT * FROM produto INNER JOIN categoria ON produto.idCategoria = categoria.idCategoria INNER JOIN marca ON produto.idMarca = marca.idMarca WHERE produto.quantidadeEstoque > 0 AND produto.nome LIKE ?";
             pst = Conexao.getInstance().prepareStatement(sql);
-            pst.setString(1, "%"+nome+"%");
+            pst.setString(1, "%" + nome + "%");
             rs = pst.executeQuery();
 
             while (rs.next()) {
@@ -144,19 +207,19 @@ public class ProdutoDAO {
         }
         return produtos;
     }
-    
+
     public Produto BuscarProduto(String codigo) throws SQLException {
         sql = "SELECT * FROM produto INNER JOIN categoria ON produto.idCategoria = categoria.idCategoria INNER JOIN marca ON produto.IdMarca = marca.idMarca WHERE idProduto = " + codigo;
         pst = Conexao.getInstance().prepareStatement(sql);
         ResultSet rs = pst.executeQuery();
         Produto prod = null;
         while (rs.next()) {
-            prod = new Produto(rs.getInt("idProduto"), rs.getString("nome"), rs.getString("descricao"), rs.getInt("quantidadeMin"), rs.getInt("quantidadeEstoque"), rs.getFloat("valorCompra"), rs.getFloat("valorSaida"), rs.getString("codigoBarras"), rs.getInt("idCategoria"), rs.getInt("idMarca"), rs.getString("descricaoCategoria"),rs.getString("nomeMarca"));
+            prod = new Produto(rs.getInt("idProduto"), rs.getString("nome"), rs.getString("descricao"), rs.getInt("quantidadeMin"), rs.getInt("quantidadeEstoque"), rs.getFloat("valorCompra"), rs.getFloat("valorSaida"), rs.getString("codigoBarras"), rs.getInt("idCategoria"), rs.getInt("idMarca"), rs.getString("descricaoCategoria"), rs.getString("nomeMarca"));
         }
         pst.close();
         return prod;
     }
-    
+
     public String alterarProduto(Produto produto) throws SQLException {
         sql = "update produto set nome=?, descricao=?, quantidadeMin=?, codigoBarras=?, idCategoria=?, idMarca=? where idProduto=?";
         pst = Conexao.getInstance().prepareStatement(sql);
@@ -174,6 +237,7 @@ public class ProdutoDAO {
         }
         return "Erro ao alterar!";
     }
+
     public String excluirProduto(Produto produto) throws SQLException {
         sql = "delete from produto where idProduto=?";
         pst = Conexao.getInstance().prepareStatement(sql);

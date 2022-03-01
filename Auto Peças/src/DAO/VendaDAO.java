@@ -9,9 +9,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.Cliente;
+import model.Funcionario;
 import model.Venda;
 import model.ItensVenda;
+import model.Produto;
 
 /**
  *
@@ -21,6 +28,8 @@ public class VendaDAO {
 
     PreparedStatement pst;
     String sql;
+    PreparedStatement pst2;
+    String sql2;
     int idVenda;
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -86,4 +95,141 @@ public class VendaDAO {
 
         }
     }
+
+    public List<Venda> readVendasAll() throws SQLException {
+        ResultSet rs = null;
+        ResultSet rs2 = null;
+        List<Venda> vendas = new ArrayList<>();
+        try {
+            sql = "SELECT * FROM venda INNER JOIN cliente ON venda.idCliente = cliente.idcliente INNER JOIN funcionario ON venda.idVendedor = funcionario.idFuncionario";
+            pst = Conexao.getInstance().prepareStatement(sql);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Venda venda = new Venda();
+                venda.setIdVenda(rs.getInt("idVenda"));
+                venda.setIdFunc(rs.getInt("idVendedor"));
+                venda.setValorTotal(rs.getDouble("valorTotal"));
+                venda.setDataVenda(rs.getDate("dataVenda"));
+                Cliente cliente = new Cliente();
+                cliente.setIdCliente(rs.getInt("idcliente"));
+                cliente.setNome(rs.getString("nome"));
+                cliente.setEndereco(rs.getString("endereco"));
+                cliente.setBairro(rs.getString("bairro"));
+                cliente.setNumero(rs.getString("numero"));
+                cliente.setCep(rs.getString("cep"));
+                cliente.setCidade(rs.getString("cidade"));
+                cliente.setTelefone(rs.getString("telefone"));
+                cliente.setCelular(rs.getString("celular"));
+                cliente.setEmail(rs.getString("email"));
+                venda.setCli(cliente);
+                vendas.add(venda);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            pst.close();
+        }
+        return vendas;
+    }
+
+    public List<Venda> readVendasData(String i, String f) throws SQLException {
+        ResultSet rs = null;
+        ResultSet rs2 = null;
+        List<Venda> vendas = new ArrayList<>();
+        try {
+            sql = "SELECT * FROM venda INNER JOIN cliente ON venda.idCliente = cliente.idcliente INNER JOIN funcionario ON venda.idVendedor = funcionario.idFuncionario WHERE (venda.dataVenda BETWEEN ? AND ?)";
+            pst = Conexao.getInstance().prepareStatement(sql);
+            pst.setString(1, i);
+            pst.setString(2, f);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Venda venda = new Venda();
+                venda.setIdVenda(rs.getInt("idVenda"));
+                venda.setIdFunc(rs.getInt("idVendedor"));
+                venda.setValorTotal(rs.getDouble("valorTotal"));
+                venda.setDataVenda(rs.getDate("dataVenda"));
+                Cliente cliente = new Cliente();
+                cliente.setIdCliente(rs.getInt("idcliente"));
+                cliente.setNome(rs.getString("nome"));
+                cliente.setEndereco(rs.getString("endereco"));
+                cliente.setBairro(rs.getString("bairro"));
+                cliente.setNumero(rs.getString("numero"));
+                cliente.setCep(rs.getString("cep"));
+                cliente.setCidade(rs.getString("cidade"));
+                cliente.setTelefone(rs.getString("telefone"));
+                cliente.setCelular(rs.getString("celular"));
+                cliente.setEmail(rs.getString("email"));
+                venda.setCli(cliente);
+                vendas.add(venda);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            pst.close();
+        }
+        return vendas;
+    }
+
+    public Venda buscaVenda(String codigo) throws SQLException {
+        ResultSet rs = null;
+        sql = "SELECT * FROM venda INNER JOIN cliente ON venda.idCliente = cliente.idcliente INNER JOIN funcionario ON venda.idVendedor = funcionario.idFuncionario WHERE venda.idVenda = ?";
+        pst = Conexao.getInstance().prepareStatement(sql);
+        pst.setString(1, codigo);
+        rs = pst.executeQuery();
+        Venda venda = new Venda();
+        while (rs.next()) {
+            Cliente cliente = new Cliente();
+            cliente.setIdCliente(rs.getInt("idcliente"));
+            cliente.setNome(rs.getString("nome"));
+            cliente.setEndereco(rs.getString("endereco"));
+            cliente.setBairro(rs.getString("bairro"));
+            cliente.setNumero(rs.getString("numero"));
+            cliente.setCep(rs.getString("cep"));
+            cliente.setCidade(rs.getString("cidade"));
+            cliente.setTelefone(rs.getString("telefone"));
+            cliente.setCelular(rs.getString("celular"));
+            cliente.setEmail(rs.getString("email"));
+            venda.setIdVenda(rs.getInt("idVenda"));
+            venda.setIdFunc(rs.getInt("idVendedor"));
+            venda.setDataVenda(rs.getDate("dataVenda"));
+            venda.setCli(cliente);
+            venda.setValorTotal(rs.getDouble("valorTotal"));
+        }
+        pst.close();
+        return venda;
+
+    }
+
+    public List<ItensVenda> buscarItens(String codigo) throws SQLException {
+        sql = "SELECT * FROM item_venda INNER JOIN produto ON item_venda.idProduto = produto.idProduto INNER JOIN venda ON item_venda.idVenda = venda.idVenda WHERE venda.idVenda = " + codigo;
+        pst = Conexao.getInstance().prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+        List<ItensVenda> itensVenda = new ArrayList<>();
+        while (rs.next()) {
+            ItensVenda itemVenda = new ItensVenda();
+            Produto produto = new Produto();
+            itemVenda.setIdItem(rs.getInt("idItem"));
+            itemVenda.setPrecoUnitario(rs.getDouble("valorUnitario"));
+            itemVenda.setQuantidade(rs.getInt("quantidade"));
+            produto.setIdProduto(rs.getInt("idProduto"));
+            produto.setNome(rs.getString("nome"));
+            produto.setDescricao(rs.getString("descricao"));
+            produto.setQuantidadeMin(rs.getInt("quantidadeMin"));
+            produto.setQuantidadeEstoque(rs.getInt("quantidadeEstoque"));
+            produto.setValorCompra(rs.getFloat("valorCompra"));
+            produto.setValorSaida(rs.getFloat("valorSaida"));
+            produto.setCodigoBarras(rs.getString("codigoBarras"));
+            produto.setIdCategoria(rs.getInt("idCategoria"));
+            produto.setIdMarca(rs.getInt("idMarca"));
+            itemVenda.setProduto(produto);
+            itensVenda.add(itemVenda);
+        }
+        pst.close();
+        return itensVenda;
+    }
+
 }
