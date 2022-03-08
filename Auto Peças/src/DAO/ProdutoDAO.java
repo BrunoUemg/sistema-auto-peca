@@ -79,11 +79,11 @@ public class ProdutoDAO {
         return produtos;
     }
 
-        public List<Produto> readProdutoTop() throws SQLException {
+    public List<Produto> readProdutoTop() throws SQLException {
         ResultSet rs = null;
         List<Produto> produtos = new ArrayList<>();
         try {
-            sql = "SELECT *, sum(item_venda.quantidade) as totalVendas FROM item_venda INNER JOIN produto ON item_venda.idProduto = produto.idProduto GROUP BY item_venda.idProduto ORDER BY totalVendas DESC";
+            sql = "SELECT *, sum(item_venda.quantidade) as totalVendas FROM item_venda INNER JOIN produto ON item_venda.idProduto = produto.idProduto GROUP BY item_venda.idProduto ORDER BY totalVendas DESC LIMIT 10";
             pst = Conexao.getInstance().prepareStatement(sql);
             rs = pst.executeQuery();
 
@@ -100,6 +100,7 @@ public class ProdutoDAO {
                 produto.setIdCategoria(rs.getInt("idCategoria"));
                 produto.setIdMarca(rs.getInt("idMarca"));
                 produto.setNomeCategoria(rs.getString("totalVendas"));
+                System.out.println(rs.getString("nome"));
                 produtos.add(produto);
             }
         } catch (SQLException ex) {

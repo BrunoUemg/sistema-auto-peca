@@ -57,6 +57,7 @@ public class RelatorioVendasView extends javax.swing.JInternalFrame {
     public RelatorioVendasView() throws ParseException {
         vendaDAO = new VendaDAO();
         itensVenda = new ItensVenda();
+        produtoDAO = new ProdutoDAO();
         initComponents();
         this.setVisible(true);
         Session session = Session.getInstance();
@@ -324,7 +325,7 @@ public class RelatorioVendasView extends javax.swing.JInternalFrame {
     public void readVendasData(String i, String f) throws SQLException {
         DefaultTableModel modelF = (DefaultTableModel) tbVendas.getModel();
         modelF.setNumRows(0);
-        for (Venda v : vendaDAO.readVendasData(i,f)) {
+        for (Venda v : vendaDAO.readVendasData(i, f)) {
             modelF.addRow(new Object[]{
                 v.getIdVenda(),
                 v.getCli().getNome(),
